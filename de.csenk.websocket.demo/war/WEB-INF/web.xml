@@ -8,17 +8,17 @@
 	<!-- Servlets -->
 	<servlet>
 		<servlet-name>webSocket</servlet-name>
-		<servlet-class>de.csenk.websocket.demo.server.WebSocketServletImpl</servlet-class>
+		<servlet-class>de.csenk.gwtws.demo.server.WebSocketServletImpl</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>webSocket</servlet-name>
-		<url-pattern>/de_csenk_websocket_demo/webSocket</url-pattern>
+		<url-pattern>/de_csenk_gwtws_demo/webSocket</url-pattern>
 	</servlet-mapping>
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
-		<welcome-file>De_csenk_websocket_demo.html</welcome-file>
+		<welcome-file>De_csenk_gwtws_demo.html</welcome-file>
 	</welcome-file-list>
 
 </web-app>

@@ -13,7 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.websocket.demo.server;
+package de.csenk.gwtws.demo.server;
 
 import de.csenk.websocket.shared.IoConnection;
 import de.csenk.websocket.shared.IoHandler;

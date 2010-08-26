@@ -1,4 +1,4 @@
-package de.csenk.websocket.demo.client;
+package de.csenk.gwtws.demo.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;

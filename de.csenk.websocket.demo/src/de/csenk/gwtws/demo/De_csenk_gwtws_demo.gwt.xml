@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module rename-to='de_csenk_websocket_demo'>
+<module rename-to='de_csenk_gwtws_demo'>
 	<!-- Inherit the core Web Toolkit stuff.                        -->
 	<inherits name='com.google.gwt.user.User' />
 
@@ -7,7 +7,7 @@
 	<inherits name='de.csenk.websocket.WebSocket' />
 
 	<!-- Specify the app entry point class.                         -->
-	<entry-point class='de.csenk.websocket.demo.client.De_csenk_websocket_demo' />
+	<entry-point class='de.csenk.websocket.demo.client.De_csenk_gwtws_demo' />
 
 	<!-- Specify the paths for translatable code                    -->
 	<source path='client' />

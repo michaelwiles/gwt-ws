@@ -15,6 +15,9 @@
 
 package de.csenk.gwtws.client;
 
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 import de.csenk.gwtws.client.js.WebSocket;
 import de.csenk.gwtws.client.js.WebSocketCallback;
 import de.csenk.gwtws.shared.IoConnection;
@@ -33,7 +36,9 @@ public class WebSocketClient implements IoService {
 	private final IoHandler handler;
 	private final WebSocket webSocket;
 	private final IoConnection webSocketConnection;
-	
+
+	private final Queue<DelayedMessage> outgoingMessages = new PriorityQueue<DelayedMessage>();
+
 	/**
 	 * @param url
 	 * @param handler
@@ -70,10 +75,41 @@ public class WebSocketClient implements IoService {
 		Object filteredMessage = message;
 		assert filteredMessage instanceof String;
 		
-		webSocket.send((String) filteredMessage);
+		sendMessageDelayedIfNecessary(message, (String) filteredMessage);
+	}
+
+	/**
+	 * @param message
+	 * @param filteredMessage
+	 */
+	private void sendMessageDelayedIfNecessary(Object message, String filteredMessage) {
+		if (webSocket.getBufferedAmount() == 0) {
+			sendMessageImmediatly(message, filteredMessage);
+			return;
+		}
+		
+		sendMessageDelayed(message, filteredMessage);
+	}
+
+	/**
+	 * @param message
+	 * @param filteredMessage
+	 */
+	private void sendMessageImmediatly(Object message, String filteredMessage) {
+		webSocket.send(filteredMessage);
 		handler.onMessageSent(webSocketConnection, message);
 	}
 	
+	/**
+	 * @param message
+	 * @param filteredMessage
+	 */
+	private void sendMessageDelayed(Object message, String filteredMessage) {
+		outgoingMessages.add(new DelayedMessage(message, filteredMessage));
+		
+		//TODO Start timer to send delayed messages
+	}
+
 	/**
 	 * @param message
 	 */
@@ -132,4 +168,5 @@ public class WebSocketClient implements IoService {
 			
 		};
 	}
+	
 }

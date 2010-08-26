@@ -5,6 +5,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-dev.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-user.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/de.csenk.websocket"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/de.csenk.gwtws"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

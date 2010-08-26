@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketServlet;
 
-import de.csenk.gwtws.server.WebSocketServer;
+import de.csenk.gwtws.server.JettyWebSocket;
 
 /**
  * @author senk.christian@googlemail.com
@@ -37,7 +37,7 @@ public class WebSocketServletImpl extends WebSocketServlet {
 	 */
 	@Override
 	protected WebSocket doWebSocketConnect(HttpServletRequest arg0, String arg1) {
-		return new WebSocketServer(new WebSocketServerHandler());
+		return new JettyWebSocket(new WebSocketServerHandler());
 	}
 
 }

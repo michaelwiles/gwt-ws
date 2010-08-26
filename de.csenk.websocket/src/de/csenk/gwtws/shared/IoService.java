@@ -13,41 +13,24 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.websocket.shared;
+package de.csenk.gwtws.shared;
 
 /**
  * @author Christian.Senk
  * @date 26.08.2010
- * @time 13:42:05
+ * @time 13:41:58
  *
  */
-public interface IoHandler {
+public interface IoService {
 
 	/**
-	 * @param connection
+	 * @return the {@link IoHandler} for this {@link IoService}
 	 */
-	void onConnectionOpened(IoConnection connection);
+	IoHandler getHandler();
 	
 	/**
-	 * @param connection
+	 * @return
 	 */
-	void onConnectionClosed(IoConnection connection);
-	
-	/**
-	 * @param caught
-	 */
-	void onExceptionCaught(Throwable caught);
-	
-	/**
-	 * @param connection
-	 * @param message
-	 */
-	void onMessageReceived(IoConnection connection, Object message);
-	
-	/**
-	 * @param connection
-	 * @param message
-	 */
-	void onMessageSent(IoConnection connection, Object message);
+	IoFilterChain getFilterChain();
 	
 }

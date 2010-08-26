@@ -13,16 +13,16 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.websocket.server;
+package de.csenk.gwtws.server;
 
 import java.io.IOException;
 
 import org.eclipse.jetty.websocket.WebSocket;
 
-import de.csenk.websocket.shared.IoConnection;
-import de.csenk.websocket.shared.IoFilterChain;
-import de.csenk.websocket.shared.IoHandler;
-import de.csenk.websocket.shared.IoService;
+import de.csenk.gwtws.shared.IoConnection;
+import de.csenk.gwtws.shared.IoFilterChain;
+import de.csenk.gwtws.shared.IoHandler;
+import de.csenk.gwtws.shared.IoService;
 
 /**
  * @author Christian.Senk

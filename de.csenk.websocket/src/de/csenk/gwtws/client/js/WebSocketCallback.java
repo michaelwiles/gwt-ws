@@ -13,7 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.websocket.client.js;
+package de.csenk.gwtws.client.js;
 
 /**
  * @author Christian.Senk

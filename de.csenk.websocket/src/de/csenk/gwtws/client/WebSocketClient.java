@@ -13,14 +13,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.websocket.client;
+package de.csenk.gwtws.client;
 
-import de.csenk.websocket.client.js.WebSocket;
-import de.csenk.websocket.client.js.WebSocketCallback;
-import de.csenk.websocket.shared.IoConnection;
-import de.csenk.websocket.shared.IoFilterChain;
-import de.csenk.websocket.shared.IoHandler;
-import de.csenk.websocket.shared.IoService;
+import de.csenk.gwtws.client.js.WebSocket;
+import de.csenk.gwtws.client.js.WebSocketCallback;
+import de.csenk.gwtws.shared.IoConnection;
+import de.csenk.gwtws.shared.IoFilterChain;
+import de.csenk.gwtws.shared.IoHandler;
+import de.csenk.gwtws.shared.IoService;
 
 /**
  * @author Christian.Senk

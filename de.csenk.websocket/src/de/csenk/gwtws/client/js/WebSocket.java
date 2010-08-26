@@ -13,7 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.websocket.client.js;
+package de.csenk.gwtws.client.js;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -65,35 +65,35 @@ public class WebSocket {
 		if (message == null)
 			return;
 		
-		this.@de.csenk.websocket.client.js.WebSocket::jsWebSocket.send(message);
+		this.@de.csenk.gwtws.client.js.WebSocket::jsWebSocket.send(message);
 	}-*/;
 	
 	/**
 	 * Closes this {@link WebSocket}.
 	 */
 	public native void close() /*-{
-		this.@de.csenk.websocket.client.js.WebSocket::jsWebSocket.close();
+		this.@de.csenk.gwtws.client.js.WebSocket::jsWebSocket.close();
 	}-*/;
 	
 	/**
 	 * @return the bufferedAmount property of the underlying JavaScript WebSocket.
 	 */
 	public native int getBufferedAmount() /*-{
-		return this.@de.csenk.websocket.client.js.WebSocket::jsWebSocket.bufferedAmount;
+		return this.@de.csenk.gwtws.client.js.WebSocket::jsWebSocket.bufferedAmount;
 	}-*/;
 	
 	/**
 	 * @return the readyState property of the underlying JavaScript WebSocket.
 	 */
 	public native int getReadyState() /*-{
-		return this.@de.csenk.websocket.client.js.WebSocket::jsWebSocket.readyState;
+		return this.@de.csenk.gwtws.client.js.WebSocket::jsWebSocket.readyState;
 	}-*/;
 	
 	/**
 	 * @return the url property of the underlying JavaScript WebSocket.
 	 */
 	public native String getURL() /*-{
-		return this.@de.csenk.websocket.client.js.WebSocket::jsWebSocket.url;
+		return this.@de.csenk.gwtws.client.js.WebSocket::jsWebSocket.url;
 	}-*/;
 	
 	/**
@@ -105,20 +105,20 @@ public class WebSocket {
 		var jsWebSocket = new WebSocket(url);
 		
 		jsWebSocket.onopen = function() {
-			webSocket.@de.csenk.websocket.client.js.WebSocket::onOpen()();
+			webSocket.@de.csenk.gwtws.client.js.WebSocket::onOpen()();
 		}
 		
 		jsWebSocket.onclose = function() {
-			webSocket.@de.csenk.websocket.client.js.WebSocket::onClose()();
+			webSocket.@de.csenk.gwtws.client.js.WebSocket::onClose()();
 		}
 		
 		jsWebSocket.onerror = function() {
-			webSocket.@de.csenk.websocket.client.js.WebSocket::onError()();
+			webSocket.@de.csenk.gwtws.client.js.WebSocket::onError()();
 		}
 		
 		jsWebSocket.onmessage = function(socketResponse) {
 			if (socketResponse.data) {
-				webSocket.@de.csenk.websocket.client.js.WebSocket::onMessage(Ljava/lang/String;)(socketResponse.data);
+				webSocket.@de.csenk.gwtws.client.js.WebSocket::onMessage(Ljava/lang/String;)(socketResponse.data);
 			}
 		}
 		

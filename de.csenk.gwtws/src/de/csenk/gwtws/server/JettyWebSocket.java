@@ -30,7 +30,7 @@ import de.csenk.gwtws.shared.IoService;
  * @time 13:56:30
  *
  */
-public class WebSocketServer implements WebSocket, IoService {
+public class JettyWebSocket implements WebSocket, IoService {
 
 	private final IoHandler handler;
 	
@@ -40,7 +40,7 @@ public class WebSocketServer implements WebSocket, IoService {
 	/**
 	 * @param handler
 	 */
-	public WebSocketServer(final IoHandler handler) {
+	public JettyWebSocket(final IoHandler handler) {
 		this.handler = handler;
 	}
 	
@@ -137,7 +137,7 @@ public class WebSocketServer implements WebSocket, IoService {
 
 			@Override
 			public void sendMessage(Object message) {
-				WebSocketServer.this.sendMessage(message);
+				JettyWebSocket.this.sendMessage(message);
 			}
 			
 		};

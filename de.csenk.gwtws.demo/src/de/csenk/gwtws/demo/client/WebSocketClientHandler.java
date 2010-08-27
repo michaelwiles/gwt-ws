@@ -15,8 +15,11 @@
 
 package de.csenk.gwtws.demo.client;
 
+import com.google.gwt.core.client.GWT;
+
 import de.csenk.gwtws.shared.IoConnection;
 import de.csenk.gwtws.shared.IoHandler;
+import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
 
 
 /**
@@ -26,7 +29,9 @@ import de.csenk.gwtws.shared.IoHandler;
  *
  */
 public class WebSocketClientHandler implements IoHandler {
-
+	
+	private final GWTSerializer stringSerializer = GWT.create(StringSerializer.class);
+	
 	/* (non-Javadoc)
 	 * @see de.csenk.websocket.shared.IoHandler#onConnectionClosed(de.csenk.websocket.shared.IoConnection)
 	 */
@@ -41,7 +46,9 @@ public class WebSocketClientHandler implements IoHandler {
 	 */
 	@Override
 	public void onConnectionOpened(IoConnection connection) {
-		connection.sendMessage("Hello World!");
+		for (int i = 0; i < 1000; i++) {
+			connection.sendMessage("#" + i);
+		}
 	}
 
 	/* (non-Javadoc)

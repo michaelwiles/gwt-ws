@@ -4,13 +4,17 @@
 	<inherits name='com.google.gwt.user.User' />
 
 	<!-- Other module inherits                                      -->
-	<inherits name='de.csenk.websocket.WebSocket' />
+	<inherits name='de.csenk.gwtws.WebSocket' />
 
 	<!-- Specify the app entry point class.                         -->
-	<entry-point class='de.csenk.websocket.demo.client.De_csenk_gwtws_demo' />
+	<entry-point class='de.csenk.gwtws.demo.client.De_csenk_gwtws_demo' />
 
 	<!-- Specify the paths for translatable code                    -->
 	<source path='client' />
 	<source path='shared' />
 
+	<!-- Logging -->
+	<inherits name='com.allen_sauer.gwt.log.gwt-log-DEBUG' />
+	<set-property name="log_DivLogger" value="ENABLED" />
+	
 </module>

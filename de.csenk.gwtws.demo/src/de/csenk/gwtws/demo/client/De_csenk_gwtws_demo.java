@@ -25,7 +25,7 @@ import de.csenk.gwtws.client.js.WebSocket;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class De_csenk_websocket_demo implements EntryPoint {
+public class De_csenk_gwtws_demo implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {

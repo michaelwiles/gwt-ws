@@ -15,19 +15,26 @@
 
 package de.csenk.gwtws.rebind.filter.serialization;
 
+import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
+import com.google.gwt.core.ext.PropertyOracle;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JPackage;
+import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
+import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
+import com.google.gwt.user.rebind.rpc.SerializableTypeOracle;
+import com.google.gwt.user.rebind.rpc.SerializableTypeOracleBuilder;
 
 import de.csenk.gwtws.client.filter.serialization.AbstractGWTSerializerImpl;
+import de.csenk.gwtws.shared.filter.serialization.Serializable;
 
 /**
  * @author Christian.Senk
@@ -83,14 +90,143 @@ public class GWTSerializerGenerator extends Generator {
 	private String createSerializer(TreeLogger serializerLogger,
 			GeneratorContext context, JClassType serializerInterface)
 			throws UnableToCompleteException {
+		TypeOracle typeOracle = context.getTypeOracle();
 		SourceWriter sourceWriter = getSourceWriter(serializerLogger, context,
 				serializerInterface);
 		if (sourceWriter == null)
 			return getImplementationQualifiedName(serializerInterface);
 
-		
+		// TODO validate serializerInterface
+
+		final PropertyOracle propertyOracle = context.getPropertyOracle();
+
+		// Determine the set of serializable types
+		SerializableTypeOracleBuilder typesSentFromBrowserBuilder = new SerializableTypeOracleBuilder(
+				serializerLogger, propertyOracle, typeOracle);
+		SerializableTypeOracleBuilder typesSentToBrowserBuilder = new SerializableTypeOracleBuilder(
+				serializerLogger, propertyOracle, typeOracle);
+
+		addRoots(serializerLogger, typeOracle, typesSentFromBrowserBuilder,
+				typesSentToBrowserBuilder, serializerInterface);
+
+		// TODO Type name ellision?
+
+		// Create a resource file to receive all of the serialization
+		// information
+		// computed by STOB and mark it as private so it does not end up in the
+		// output.
+		OutputStream pathInfo = context.tryCreateResource(serializerLogger,
+				serializerInterface.getQualifiedSourceName() + ".rpc.log");
+		PrintWriter writer = null;
+		SerializableTypeOracle typesSentFromBrowser;
+		SerializableTypeOracle typesSentToBrowser;
+		try {
+			writer = new PrintWriter(pathInfo);
+
+			typesSentFromBrowserBuilder.setLogOutputStream(pathInfo);
+			typesSentToBrowserBuilder.setLogOutputStream(pathInfo);
+
+			writer.write("====================================\n");
+			writer.write("Types potentially sent from browser:\n");
+			writer.write("====================================\n\n");
+			writer.flush();
+			typesSentFromBrowser = typesSentFromBrowserBuilder
+					.build(serializerLogger);
+
+			writer.write("===================================\n");
+			writer.write("Types potentially sent from server:\n");
+			writer.write("===================================\n\n");
+			writer.flush();
+			typesSentToBrowser = typesSentToBrowserBuilder
+					.build(serializerLogger);
+
+			if (pathInfo != null) {
+				context.commitResource(serializerLogger, pathInfo).setPrivate(
+						true);
+			}
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
+		}
+
 		sourceWriter.commit(serializerLogger);
 		return getImplementationQualifiedName(serializerInterface);
+	}
+
+	/**
+	 * @param serializerLogger
+	 * @param typeOracle
+	 * @param typesSentFromBrowserBuilder
+	 * @param typesSentToBrowserBuilder
+	 */
+	private void addRoots(TreeLogger serializerLogger, TypeOracle typeOracle,
+			SerializableTypeOracleBuilder typesSentFromBrowserBuilder,
+			SerializableTypeOracleBuilder typesSentToBrowserBuilder,
+			JClassType serializerInterface) throws UnableToCompleteException {
+		try {
+			addRequiredRoots(serializerLogger, typeOracle,
+					typesSentFromBrowserBuilder);
+			addRequiredRoots(serializerLogger, typeOracle,
+					typesSentToBrowserBuilder);
+
+			addSerializerRootTypes(serializerLogger, typeOracle,
+					typesSentFromBrowserBuilder, typesSentToBrowserBuilder,
+					serializerInterface);
+		} catch (NotFoundException e) {
+			serializerLogger.log(TreeLogger.ERROR,
+					"Unable to find type referenced from remote service", e);
+			throw new UnableToCompleteException();
+		}
+	}
+
+	/**
+	 * @param serializerLogger
+	 * @param typeOracle
+	 * @param typesSentFromBrowserBuilder
+	 * @param typesSentToBrowserBuilder
+	 * @param serializerInterface
+	 */
+	private void addSerializerRootTypes(TreeLogger serializerLogger,
+			TypeOracle typeOracle,
+			SerializableTypeOracleBuilder typesSentFromBrowserBuilder,
+			SerializableTypeOracleBuilder typesSentToBrowserBuilder,
+			JClassType serializerInterface) {
+		serializerLogger = serializerLogger.branch(TreeLogger.DEBUG,
+				"Analyzing '"
+						+ serializerInterface
+								.getParameterizedQualifiedSourceName()
+						+ "' for serializable types", null);
+
+		Serializable serializableAnnotation = serializerInterface
+				.getAnnotation(Serializable.class);
+		for (Class<?> clazz : serializableAnnotation.value()) {
+			JClassType classType = typeOracle
+					.findType(clazz.getCanonicalName());
+
+			typesSentFromBrowserBuilder
+					.addRootType(serializerLogger, classType);
+			typesSentToBrowserBuilder.addRootType(serializerLogger, classType);
+		}
+	}
+
+	/**
+	 * Add the implicit root types that are needed to make RPC work. These would
+	 * be {@link String} and {@link IncompatibleRemoteServiceException}.
+	 */
+	private static void addRequiredRoots(TreeLogger logger,
+			TypeOracle typeOracle, SerializableTypeOracleBuilder stob)
+			throws NotFoundException {
+		logger = logger.branch(TreeLogger.DEBUG, "Analyzing implicit types");
+
+		// String is always instantiable.
+		JClassType stringType = typeOracle.getType(String.class.getName());
+		stob.addRootType(logger, stringType);
+
+		// IncompatibleRemoteServiceException is always serializable
+		JClassType icseType = typeOracle
+				.getType(IncompatibleRemoteServiceException.class.getName());
+		stob.addRootType(logger, icseType);
 	}
 
 	/**
@@ -105,7 +241,8 @@ public class GWTSerializerGenerator extends Generator {
 		String packageName = serializerIntfPkg == null ? "" : serializerIntfPkg
 				.getName();
 
-		PrintWriter printWriter = ctx.tryCreate(logger, packageName, getImplementationSimpleName(serializerInterface));
+		PrintWriter printWriter = ctx.tryCreate(logger, packageName,
+				getImplementationSimpleName(serializerInterface));
 		if (printWriter == null) {
 			return null;
 		}

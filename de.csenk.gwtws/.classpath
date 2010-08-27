@@ -6,5 +6,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-dev.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-user.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-log-3.0.3.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

@@ -15,8 +15,12 @@
 
 package de.csenk.gwtws.client;
 
+import java.util.Date;
 import java.util.PriorityQueue;
 import java.util.Queue;
+
+import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.user.client.Timer;
 
 import de.csenk.gwtws.client.js.WebSocket;
 import de.csenk.gwtws.client.js.WebSocketCallback;
@@ -38,7 +42,25 @@ public class WebSocketClient implements IoService {
 	private final IoConnection webSocketConnection;
 
 	private final Queue<DelayedMessage> outgoingMessages = new PriorityQueue<DelayedMessage>();
+	private final Timer sendDelayedMessageTimer = new Timer() {
 
+		@Override
+		public void run() {
+			if (outgoingMessages.size() <= 0 || webSocket.getBufferedAmount() >= 0)
+				return;
+			
+			DelayedMessage nextMessage = outgoingMessages.poll();
+			
+			sendMessageImmediatly(nextMessage.getMessage(), nextMessage.getFilteredMessage());
+			Log.debug("Sending message with a delay of " + (new Date().getTime() - nextMessage.getSendingTimestamp()) + "ms");
+			
+			if (outgoingMessages.size() <= 0)
+				cancel();
+		}
+		
+	};
+	
+	
 	/**
 	 * @param url
 	 * @param handler
@@ -106,8 +128,7 @@ public class WebSocketClient implements IoService {
 	 */
 	private void sendMessageDelayed(Object message, String filteredMessage) {
 		outgoingMessages.add(new DelayedMessage(message, filteredMessage));
-		
-		//TODO Start timer to send delayed messages
+		sendDelayedMessageTimer.scheduleRepeating(10);
 	}
 
 	/**

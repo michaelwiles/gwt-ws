@@ -4,8 +4,8 @@
 	<classpathentry kind="src" output="war/WEB-INF/test-classes" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-dev.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-user.jar"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/de.csenk.gwt.jetty-7.1.6.v20100715.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-log-3.0.3.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

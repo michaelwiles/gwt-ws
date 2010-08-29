@@ -19,6 +19,7 @@ import java.io.IOException;
 
 import org.eclipse.jetty.websocket.WebSocket;
 
+import de.csenk.gwtws.server.filter.ServerFilterChainImpl;
 import de.csenk.gwtws.shared.IoConnection;
 import de.csenk.gwtws.shared.IoFilterChain;
 import de.csenk.gwtws.shared.IoHandler;
@@ -33,6 +34,7 @@ import de.csenk.gwtws.shared.IoService;
 public class JettyWebSocket implements WebSocket, IoService {
 
 	private final IoHandler handler;
+	private final IoFilterChain filterChain = new ServerFilterChainImpl();
 	
 	private Outbound outbound;
 	private IoConnection outboundConnection;
@@ -92,8 +94,7 @@ public class JettyWebSocket implements WebSocket, IoService {
 	 */
 	@Override
 	public IoFilterChain getFilterChain() {
-		// TODO Auto-generated method stub
-		return null;
+		return filterChain;
 	}
 
 	/* (non-Javadoc)

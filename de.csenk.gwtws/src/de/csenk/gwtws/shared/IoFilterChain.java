@@ -22,5 +22,16 @@ package de.csenk.gwtws.shared;
  *
  */
 public interface IoFilterChain {
-
+	
+	/**
+	 * @param filterName
+	 * @param filter
+	 */
+	void addLast(String filterName, IoFilter filter);
+	
+	/**
+	 * @return
+	 */
+	IoFilter getFirst();
+	
 }

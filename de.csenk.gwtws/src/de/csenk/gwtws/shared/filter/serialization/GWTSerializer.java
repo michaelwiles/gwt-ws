@@ -15,6 +15,8 @@
 
 package de.csenk.gwtws.shared.filter.serialization;
 
+import com.google.gwt.user.client.rpc.SerializationException;
+
 /**
  * @author Christian.Senk
  * @date 27.08.2010
@@ -27,12 +29,12 @@ public interface GWTSerializer {
 	 * @param serializedContent
 	 * @return
 	 */
-	Object deserialize(String serializedContent);
+	Object deserialize(String serializedContent) throws SerializationException;
 	
 	/**
 	 * @param obj
 	 * @return
 	 */
-	String serialize(Object obj);
+	String serialize(Object obj) throws SerializationException;
 	
 }

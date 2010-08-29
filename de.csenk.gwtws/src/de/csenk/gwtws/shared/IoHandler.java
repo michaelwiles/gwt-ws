@@ -26,12 +26,12 @@ public interface IoHandler {
 	/**
 	 * @param connection
 	 */
-	void onConnectionOpened(IoConnection connection);
+	void onConnectionOpened(IoConnection connection) throws Exception;
 	
 	/**
 	 * @param connection
 	 */
-	void onConnectionClosed(IoConnection connection);
+	void onConnectionClosed(IoConnection connection) throws Exception;
 	
 	/**
 	 * @param caught
@@ -42,12 +42,12 @@ public interface IoHandler {
 	 * @param connection
 	 * @param message
 	 */
-	void onMessageReceived(IoConnection connection, Object message);
+	void onMessageReceived(IoConnection connection, Object message) throws Exception;
 	
 	/**
 	 * @param connection
 	 * @param message
 	 */
-	void onMessageSent(IoConnection connection, Object message);
+	void onMessageSent(IoConnection connection, Object message) throws Exception;
 	
 }

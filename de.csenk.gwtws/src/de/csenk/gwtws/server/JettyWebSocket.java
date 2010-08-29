@@ -51,7 +51,12 @@ public class JettyWebSocket implements WebSocket, IoService {
 	public void onConnect(Outbound outbound) {
 		this.outbound = outbound;
 		outboundConnection = createOutboundConnection(outbound);
-		handler.onConnectionOpened(outboundConnection);
+		
+		try {
+			handler.onConnectionOpened(outboundConnection);
+		} catch (Throwable e) {
+			handler.onExceptionCaught(e);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -59,7 +64,11 @@ public class JettyWebSocket implements WebSocket, IoService {
 	 */
 	@Override
 	public void onDisconnect() {
-		handler.onConnectionClosed(outboundConnection);
+		try {
+			handler.onConnectionClosed(outboundConnection);
+		} catch (Throwable e) {
+			handler.onExceptionCaught(e);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -110,7 +119,11 @@ public class JettyWebSocket implements WebSocket, IoService {
 			handler.onExceptionCaught(e);
 		}
 		
-		handler.onMessageSent(outboundConnection, message);
+		try {
+			handler.onMessageSent(outboundConnection, message);
+		} catch (Throwable e) {
+			handler.onExceptionCaught(e);
+		}
 	}
 	
 	/**
@@ -120,7 +133,12 @@ public class JettyWebSocket implements WebSocket, IoService {
 		//TODO Filter message
 		
 		Object filteredMessage = message;
-		handler.onMessageReceived(outboundConnection, filteredMessage);
+		
+		try {
+			handler.onMessageReceived(outboundConnection, filteredMessage);
+		} catch (Throwable e) {
+			handler.onExceptionCaught(e);
+		}
 	}
 	
 	/**

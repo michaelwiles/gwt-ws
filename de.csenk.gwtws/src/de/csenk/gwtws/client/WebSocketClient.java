@@ -16,7 +16,7 @@
 package de.csenk.gwtws.client;
 
 import java.util.Date;
-import java.util.PriorityQueue;
+import java.util.LinkedList;
 import java.util.Queue;
 
 import com.allen_sauer.gwt.log.client.Log;
@@ -41,21 +41,29 @@ public class WebSocketClient implements IoService {
 	private final WebSocket webSocket;
 	private final IoConnection webSocketConnection;
 
-	private final Queue<DelayedMessage> outgoingMessages = new PriorityQueue<DelayedMessage>();
+	private final Queue<DelayedMessage> outgoingMessages = new LinkedList<DelayedMessage>();
 	private final Timer sendDelayedMessageTimer = new Timer() {
 
 		@Override
 		public void run() {
-			if (outgoingMessages.size() <= 0 || webSocket.getBufferedAmount() >= 0)
+			if (outgoingMessages.isEmpty()) {
+				cancel();
+				return;
+			}
+			
+			if (webSocket.getBufferedAmount() > 0)
 				return;
 			
 			DelayedMessage nextMessage = outgoingMessages.poll();
+			if (nextMessage == null)
+				return;
 			
-			sendMessageImmediatly(nextMessage.getMessage(), nextMessage.getFilteredMessage());
-			Log.debug("Sending message with a delay of " + (new Date().getTime() - nextMessage.getSendingTimestamp()) + "ms");
-			
-			if (outgoingMessages.size() <= 0)
-				cancel();
+			try {
+				sendMessageImmediatly(nextMessage.getMessage(), nextMessage.getFilteredMessage());
+				Log.debug("Sending message with a delay of " + (new Date().getTime() - nextMessage.getSendingTimestamp()) + "ms");
+			} catch (Throwable e) {
+				handler.onExceptionCaught(e);
+			}
 		}
 		
 	};
@@ -89,9 +97,10 @@ public class WebSocketClient implements IoService {
 	}
 
 	/**
+	 * @throws Exception 
 	 * 
 	 */
-	private void sendMessage(Object message) {
+	private void sendMessage(Object message) throws Exception {
 		//TODO Filter message
 		
 		Object filteredMessage = message;
@@ -103,9 +112,10 @@ public class WebSocketClient implements IoService {
 	/**
 	 * @param message
 	 * @param filteredMessage
+	 * @throws Exception 
 	 */
-	private void sendMessageDelayedIfNecessary(Object message, String filteredMessage) {
-		if (webSocket.getBufferedAmount() == 0) {
+	private void sendMessageDelayedIfNecessary(Object message, String filteredMessage) throws Exception {
+		if (webSocket.getBufferedAmount() <= 0) {
 			sendMessageImmediatly(message, filteredMessage);
 			return;
 		}
@@ -116,8 +126,9 @@ public class WebSocketClient implements IoService {
 	/**
 	 * @param message
 	 * @param filteredMessage
+	 * @throws Exception 
 	 */
-	private void sendMessageImmediatly(Object message, String filteredMessage) {
+	private void sendMessageImmediatly(Object message, String filteredMessage) throws Exception {
 		webSocket.send(filteredMessage);
 		handler.onMessageSent(webSocketConnection, message);
 	}
@@ -133,8 +144,9 @@ public class WebSocketClient implements IoService {
 
 	/**
 	 * @param message
+	 * @throws Exception 
 	 */
-	private void receiveMessage(String message) {
+	private void receiveMessage(String message) throws Exception {
 		//TODO Filter message
 		
 		Object filteredMessage = message;
@@ -149,13 +161,21 @@ public class WebSocketClient implements IoService {
 		return new WebSocket(url, new WebSocketCallback() {
 			
 			@Override
-			public void onOpen(WebSocket webSocket) {
-				handler.onConnectionOpened(webSocketConnection);
+			public void onOpen(WebSocket webSocket) {		
+				try {
+					handler.onConnectionOpened(webSocketConnection);
+				} catch (Throwable thrown) {
+					handler.onExceptionCaught(thrown);
+				}
 			}
 			
 			@Override
-			public void onMessage(WebSocket webSocket, String message) {
-				receiveMessage(message);
+			public void onMessage(WebSocket webSocket, String message) {	
+				try {
+					receiveMessage(message);
+				} catch (Throwable thrown) {
+					handler.onExceptionCaught(thrown);
+				}
 			}
 			
 			@Override
@@ -165,7 +185,11 @@ public class WebSocketClient implements IoService {
 			
 			@Override
 			public void onClose(WebSocket webSocket) {
-				handler.onConnectionClosed(webSocketConnection);
+				try {
+					handler.onConnectionClosed(webSocketConnection);
+				} catch (Throwable thrown) {
+					handler.onExceptionCaught(thrown);
+				}
 			}
 			
 		});
@@ -179,12 +203,20 @@ public class WebSocketClient implements IoService {
 			
 			@Override
 			public void sendMessage(Object message) {
-				WebSocketClient.this.sendMessage(message);
+				try {
+					WebSocketClient.this.sendMessage(message);
+				} catch (Throwable thrown) {
+					handler.onExceptionCaught(thrown);
+				}
 			}
 			
 			@Override
 			public void close() {
-				webSocket.close();
+				try {
+					webSocket.close();
+				} catch (Throwable thrown) {
+					handler.onExceptionCaught(thrown);
+				}
 			}
 			
 		};

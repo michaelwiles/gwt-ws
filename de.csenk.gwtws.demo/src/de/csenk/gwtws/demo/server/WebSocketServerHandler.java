@@ -15,6 +15,7 @@
 
 package de.csenk.gwtws.demo.server;
 
+import de.csenk.gwtws.server.filter.serialization.ServerGWTSerializer;
 import de.csenk.gwtws.shared.IoConnection;
 import de.csenk.gwtws.shared.IoHandler;
 
@@ -27,13 +28,14 @@ import de.csenk.gwtws.shared.IoHandler;
  */
 public class WebSocketServerHandler implements IoHandler {
 
+	private final ServerGWTSerializer serverSerializer = new ServerGWTSerializer();
+	
 	/* (non-Javadoc)
 	 * @see de.csenk.websocket.shared.IoHandler#onConnectionClosed(de.csenk.websocket.shared.IoConnection)
 	 */
 	@Override
 	public void onConnectionClosed(IoConnection connection) {
-		// TODO Auto-generated method stub
-
+		System.out.println("Connection closed");
 	}
 
 	/* (non-Javadoc)
@@ -41,8 +43,8 @@ public class WebSocketServerHandler implements IoHandler {
 	 */
 	@Override
 	public void onConnectionOpened(IoConnection connection) {
-		// TODO Auto-generated method stub
-
+		System.out.println(Thread.currentThread().getContextClassLoader().toString());
+		System.out.println("Connection opened");
 	}
 
 	/* (non-Javadoc)
@@ -50,16 +52,17 @@ public class WebSocketServerHandler implements IoHandler {
 	 */
 	@Override
 	public void onExceptionCaught(Throwable caught) {
-		// TODO Auto-generated method stub
-
+		caught.printStackTrace();
 	}
 
 	/* (non-Javadoc)
 	 * @see de.csenk.websocket.shared.IoHandler#onMessageReceived(de.csenk.websocket.shared.IoConnection, java.lang.Object)
 	 */
 	@Override
-	public void onMessageReceived(IoConnection connection, Object message) {
-		System.out.println(message);
+	public void onMessageReceived(IoConnection connection, Object message) throws Exception {
+		System.out.println(Thread.currentThread().getContextClassLoader().toString());
+		Object obj = serverSerializer.deserialize((String) message);
+		System.out.println(obj.getClass().getName() + ": " + obj.toString());
 	}
 
 	/* (non-Javadoc)

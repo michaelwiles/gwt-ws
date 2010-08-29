@@ -37,6 +37,7 @@ public class WebSocketServletImpl extends WebSocketServlet {
 	 */
 	@Override
 	protected WebSocket doWebSocketConnect(HttpServletRequest arg0, String arg1) {
+		System.out.println(Thread.currentThread().getContextClassLoader().toString());
 		return new JettyWebSocket(new WebSocketServerHandler());
 	}
 

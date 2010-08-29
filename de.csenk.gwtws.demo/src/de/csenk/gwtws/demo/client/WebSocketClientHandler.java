@@ -15,6 +15,7 @@
 
 package de.csenk.gwtws.demo.client;
 
+import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 
 import de.csenk.gwtws.shared.IoConnection;
@@ -30,24 +31,26 @@ import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
  */
 public class WebSocketClientHandler implements IoHandler {
 	
-	private final GWTSerializer stringSerializer = GWT.create(StringSerializer.class);
+	private final GWTSerializer serializer = GWT.create(GWTSerializer.class);
 	
 	/* (non-Javadoc)
 	 * @see de.csenk.websocket.shared.IoHandler#onConnectionClosed(de.csenk.websocket.shared.IoConnection)
 	 */
 	@Override
 	public void onConnectionClosed(IoConnection connection) {
-		// TODO Auto-generated method stub
-
+		Log.info("Connection closed");
 	}
 
 	/* (non-Javadoc)
 	 * @see de.csenk.websocket.shared.IoHandler#onConnectionOpened(de.csenk.websocket.shared.IoConnection)
 	 */
 	@Override
-	public void onConnectionOpened(IoConnection connection) {
-		for (int i = 0; i < 1000; i++) {
-			connection.sendMessage("#" + i);
+	public void onConnectionOpened(IoConnection connection) throws Exception {
+		Log.info("Connection opened");
+		
+		for (int i = 0; i < 10; i++) {
+			connection.sendMessage(serializer.serialize(i));
+			connection.sendMessage(serializer.serialize("#" + i));
 		}
 	}
 
@@ -56,8 +59,7 @@ public class WebSocketClientHandler implements IoHandler {
 	 */
 	@Override
 	public void onExceptionCaught(Throwable caught) {
-		// TODO Auto-generated method stub
-
+		Log.error("WebSocketClientHandler.onExceptionCaught", caught);
 	}
 
 	/* (non-Javadoc)

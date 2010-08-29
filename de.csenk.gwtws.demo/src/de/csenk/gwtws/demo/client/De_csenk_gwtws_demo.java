@@ -33,6 +33,8 @@ public class De_csenk_gwtws_demo implements EntryPoint {
 			return;
 		
 		String webSocketURL = GWT.getModuleBaseURL().replace("http", "ws") + "webSocket";
+		
+		@SuppressWarnings("unused")
 		WebSocketClient webSocketClient = new WebSocketClient(webSocketURL, new WebSocketClientHandler());
 	}
 	

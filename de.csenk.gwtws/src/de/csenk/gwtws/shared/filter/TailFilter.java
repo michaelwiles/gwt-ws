@@ -34,8 +34,7 @@ public class TailFilter implements Filter {
 	@Override
 	public void onConnectionClosed(NextFilter nextFilter, Connection connection)
 			throws Exception {
-		// TODO Auto-generated method stub
-
+		connection.getHandler().onConnectionClosed(connection);
 	}
 
 	/* (non-Javadoc)
@@ -44,8 +43,7 @@ public class TailFilter implements Filter {
 	@Override
 	public void onConnectionOpened(NextFilter nextFilter, Connection connection)
 			throws Exception {
-		// TODO Auto-generated method stub
-
+		connection.getHandler().onConnectionOpened(connection);
 	}
 
 	/* (non-Javadoc)
@@ -53,8 +51,7 @@ public class TailFilter implements Filter {
 	 */
 	@Override
 	public void onExceptionCaught(NextFilter nextFilter, Throwable caught) {
-		// TODO Auto-generated method stub
-
+		nextFilter.onExceptionCaught(caught);
 	}
 
 	/* (non-Javadoc)
@@ -63,8 +60,7 @@ public class TailFilter implements Filter {
 	@Override
 	public void onMessageReceived(NextFilter nextFilter, Connection connection,
 			Object message) throws Exception {
-		// TODO Auto-generated method stub
-
+		nextFilter.onMessageReceived(connection, message);
 	}
 
 	/* (non-Javadoc)
@@ -73,8 +69,7 @@ public class TailFilter implements Filter {
 	@Override
 	public void onMessageSent(NextFilter nextFilter, Connection connection,
 			Object message) throws Exception {
-		// TODO Auto-generated method stub
-
+		nextFilter.onMessageSent(connection, message);
 	}
 
 	/* (non-Javadoc)
@@ -83,8 +78,7 @@ public class TailFilter implements Filter {
 	@Override
 	public void onSendMessage(NextFilter nextFilter, Connection connection,
 			Object message) throws Exception {
-		// TODO Auto-generated method stub
-
+		nextFilter.onSendMessage(connection, message);
 	}
 
 }

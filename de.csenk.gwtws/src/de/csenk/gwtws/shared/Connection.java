@@ -31,11 +31,6 @@ public interface Connection {
 	void send(Object message);
 	
 	/**
-	 * @param message
-	 */
-	void receive(Object message);
-	
-	/**
 	 * Closes this {@link Connection}.
 	 */
 	void close();
@@ -50,4 +45,8 @@ public interface Connection {
 	 */
 	FilterChain getFilterChain();
 	
+	/**
+	 * @return
+	 */
+	Sender getSender();
 }

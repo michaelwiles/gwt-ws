@@ -13,20 +13,34 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.shared;
+package de.csenk.gwtws.server.jetty;
+
+import java.io.IOException;
+
+import org.eclipse.jetty.websocket.WebSocket.Outbound;
+
+import de.csenk.gwtws.shared.Sender;
 
 /**
  * @author Christian.Senk
  * @date 30.08.2010
- * @time 15:43:21
+ * @time 15:46:16
  *
  */
-public interface ExtendedFilterChain extends FilterChain {
+public class OutboundSender implements Sender {
 
-	/**
-	 * @param connection
-	 * @param message
+	private final Outbound outbound;
+	
+	public OutboundSender(Outbound outbound) {
+		this.outbound = outbound;
+	}
+	
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.Sender#send(java.lang.String)
 	 */
-	void fireSendMessage(Connection connection, Object message);
+	@Override
+	public void send(String message) throws IOException {
+		outbound.sendMessage(message);
+	}
 	
 }

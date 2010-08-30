@@ -15,6 +15,8 @@
 
 package de.csenk.gwtws.shared;
 
+import java.io.IOException;
+
 /**
  * @author Christian.Senk
  * @date 30.08.2010
@@ -28,6 +30,6 @@ public interface Sender {
 	 * 
 	 * @param message
 	 */
-	void send(String message);
+	void send(String message) throws IOException;
 	
 }

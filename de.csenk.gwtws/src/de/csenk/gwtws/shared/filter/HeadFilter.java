@@ -30,9 +30,9 @@ public final class HeadFilter implements Filter {
 	public static final String NAME = "head";
 	
 	/**
-	 * @param socketSender
+	 * @param connection
 	 */
-	public HeadFilter(Sender socketSender) {
+	public HeadFilter(Connection connection) {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -91,8 +91,10 @@ public final class HeadFilter implements Filter {
 	@Override
 	public void onSendMessage(NextFilter nextFilter, Connection connection,
 			Object message) throws Exception {
-		// TODO Auto-generated method stub
-
+		assert message instanceof String;
+		
+		Sender sender = connection.getSender();
+		sender.send((String) message);
 	}
 
 }

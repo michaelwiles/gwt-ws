@@ -13,14 +13,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.server;
+package de.csenk.gwtws.server.jetty;
 
 import org.eclipse.jetty.websocket.WebSocket;
 
 import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.FilterChain;
 import de.csenk.gwtws.shared.Handler;
-import de.csenk.gwtws.shared.Service;
+import de.csenk.gwtws.shared.Sender;
 
 /**
  * @author senk.christian@googlemail.com
@@ -28,12 +28,12 @@ import de.csenk.gwtws.shared.Service;
  * @time 13:56:30
  *
  */
-public class JettyWebSocket implements WebSocket, Service {
+public class JettyWebSocket implements WebSocket, Connection {
 
 	private final Handler handler;
 	
 	private Outbound outbound;
-	private Connection outboundConnection;
+	private Sender sender;
 	
 	/**
 	 * @param handler
@@ -41,14 +41,13 @@ public class JettyWebSocket implements WebSocket, Service {
 	public JettyWebSocket(final Handler handler) {
 		this.handler = handler;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.jetty.websocket.WebSocket#onConnect(org.eclipse.jetty.websocket.WebSocket.Outbound)
 	 */
 	@Override
-	public void onConnect(Outbound outbound) {
-		this.outbound = outbound;
-		outboundConnection = new OutboundConnection();
+	public void onConnect(Outbound arg0) {
+		sender = new OutboundSender(arg0);
 	}
 
 	/* (non-Javadoc)
@@ -64,7 +63,7 @@ public class JettyWebSocket implements WebSocket, Service {
 	 * @see org.eclipse.jetty.websocket.WebSocket#onMessage(byte, java.lang.String)
 	 */
 	@Override
-	public void onMessage(byte arg0, String message) {
+	public void onMessage(byte arg0, String arg1) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -73,13 +72,30 @@ public class JettyWebSocket implements WebSocket, Service {
 	 * @see org.eclipse.jetty.websocket.WebSocket#onMessage(byte, byte[], int, int)
 	 */
 	@Override
-	public void onMessage(byte arg0, byte[] messageBytes, int messageOffset, int messageLength) {
+	public void onMessage(byte arg0, byte[] arg1, int arg2, int arg3) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	/* (non-Javadoc)
-	 * @see de.csenk.websocket.shared.IoService#getHandler()
+	 * @see de.csenk.gwtws.shared.Connection#close()
+	 */
+	@Override
+	public void close() {
+		outbound.disconnect();
+	}
+
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.Connection#getFilterChain()
+	 */
+	@Override
+	public FilterChain getFilterChain() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.Connection#getHandler()
 	 */
 	@Override
 	public Handler getHandler() {
@@ -87,12 +103,20 @@ public class JettyWebSocket implements WebSocket, Service {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.csenk.gwtws.shared.Service#getFilterChainBuilder()
+	 * @see de.csenk.gwtws.shared.Connection#getSender()
 	 */
 	@Override
-	public FilterChain getFilterChain() {
+	public Sender getSender() {
+		return sender;
+	}
+
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.Connection#send(java.lang.Object)
+	 */
+	@Override
+	public void send(Object message) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 		
 }

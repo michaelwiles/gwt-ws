@@ -15,10 +15,13 @@
 
 package de.csenk.gwtws.client;
 
+import de.csenk.gwtws.client.js.WebSocket;
+import de.csenk.gwtws.client.js.WebSocketCallback;
 import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.FilterChain;
 import de.csenk.gwtws.shared.Handler;
-import de.csenk.gwtws.shared.Service;
+import de.csenk.gwtws.shared.Sender;
+import de.csenk.gwtws.shared.filter.FilterChainImpl;
 
 /**
  * @author senk.christian@googlemail.com
@@ -26,10 +29,11 @@ import de.csenk.gwtws.shared.Service;
  * @time 13:44:45
  *
  */
-public class WebSocketClient implements Service {
+public class WebSocketClient implements Connection {
 
 	private final Handler handler;
-	private final Connection webSocketConnection;
+	private final WebSocket webSocket;
+	private final FilterChain filterChain;
 	
 	/**
 	 * @param url
@@ -37,11 +41,29 @@ public class WebSocketClient implements Service {
 	 */
 	public WebSocketClient(final String url, final Handler handler) {
 		this.handler = handler;
-		this.webSocketConnection = new WebSocketConnection();
+		this.webSocket = createWebSocket(url);
+		
+		this.filterChain = new FilterChainImpl(this);
 	}
 
 	/* (non-Javadoc)
-	 * @see de.csenk.websocket.shared.IoService#getHandler()
+	 * @see de.csenk.gwtws.shared.Connection#close()
+	 */
+	@Override
+	public void close() {
+		webSocket.close();
+	}
+
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.Connection#getFilterChain()
+	 */
+	@Override
+	public FilterChain getFilterChain() {
+		return filterChain;
+	}
+
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.Connection#getHandler()
 	 */
 	@Override
 	public Handler getHandler() {
@@ -49,12 +71,53 @@ public class WebSocketClient implements Service {
 	}
 
 	/* (non-Javadoc)
-	 * @see de.csenk.websocket.shared.IoService#getFilterChainBuilder()
+	 * @see de.csenk.gwtws.shared.Connection#getSender()
 	 */
 	@Override
-	public FilterChain getFilterChain() {
+	public Sender getSender() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.Connection#send(java.lang.Object)
+	 */
+	@Override
+	public void send(Object message) {
+		filterChain.fireSendMessage(this, message);
+	}
 		
+	/**
+	 * @param url
+	 * @return
+	 */
+	private WebSocket createWebSocket(String url) {
+		return new WebSocket(url, new WebSocketCallback() {
+			
+			@Override
+			public void onOpen(WebSocket webSocket) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onMessage(WebSocket webSocket, String message) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onError(WebSocket webSocket) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onClose(WebSocket webSocket) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	}
+	
 }

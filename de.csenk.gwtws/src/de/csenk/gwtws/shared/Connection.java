@@ -18,36 +18,36 @@ package de.csenk.gwtws.shared;
 /**
  * @author senk.christian@googlemail.com
  * @date 26.08.2010
- * @time 13:42:05
+ * @time 13:06:59
  *
  */
-public interface IoHandler {
+public interface Connection {
 
 	/**
-	 * @param connection
-	 */
-	void onConnectionOpened(IoConnection connection) throws Exception;
-	
-	/**
-	 * @param connection
-	 */
-	void onConnectionClosed(IoConnection connection) throws Exception;
-	
-	/**
-	 * @param caught
-	 */
-	void onExceptionCaught(Throwable caught);
-	
-	/**
-	 * @param connection
+	 * Sends a message through this {@link Connection}.
+	 * 
 	 * @param message
 	 */
-	void onMessageReceived(IoConnection connection, Object message) throws Exception;
+	void send(Object message);
 	
 	/**
-	 * @param connection
 	 * @param message
 	 */
-	void onMessageSent(IoConnection connection, Object message) throws Exception;
+	void receive(Object message);
+	
+	/**
+	 * Closes this {@link Connection}.
+	 */
+	void close();
+	
+	/**
+	 * @return
+	 */
+	Handler getHandler();
+	
+	/**
+	 * @return
+	 */
+	FilterChain getFilterChain();
 	
 }

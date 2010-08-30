@@ -15,23 +15,45 @@
 
 package de.csenk.gwtws.shared;
 
+import de.csenk.gwtws.shared.Filter.NextFilter;
+
 /**
  * @author senk.christian@googlemail.com
  * @date 26.08.2010
  * @time 14:08:49
  *
  */
-public interface IoFilterChain {
+public interface FilterChain {
 	
 	/**
 	 * @param filterName
 	 * @param filter
 	 */
-	void addLast(String filterName, IoFilter filter);
+	void addLast(String filterName, Filter filter);
 	
 	/**
-	 * @return
+	 * @author Christian.Senk
+	 * @date 30.08.2010
+	 * @time 10:45:11
+	 *
 	 */
-	IoFilter getFirst();
+	public interface Entry {
+		
+		/**
+		 * @return
+		 */
+		String getName();
+		
+		/**
+		 * @return
+		 */
+		Filter getFilter();
+		
+		/**
+		 * @return
+		 */
+		NextFilter getNextFilter();
+		
+	}
 	
 }

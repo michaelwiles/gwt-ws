@@ -13,13 +13,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.server.filter;
+package de.csenk.gwtws.shared.filter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import de.csenk.gwtws.shared.IoFilter;
-import de.csenk.gwtws.shared.IoFilterChain;
+import de.csenk.gwtws.shared.Connection;
+import de.csenk.gwtws.shared.ExtendedFilterChain;
+import de.csenk.gwtws.shared.Sender;
 
 /**
  * @author Christian
@@ -27,28 +25,25 @@ import de.csenk.gwtws.shared.IoFilterChain;
  * @time 22:52:15
  *
  */
-public class ServerFilterChainImpl implements IoFilterChain {
-	
-	private final List<IoFilter> filterList = new ArrayList<IoFilter>();
-
-	/* (non-Javadoc)
-	 * @see de.csenk.gwtws.shared.IoFilterChain#addLast(java.lang.String, de.csenk.gwtws.shared.IoFilter)
-	 */
-	@Override
-	public synchronized void addLast(String filterName, IoFilter filter) {
-		//TODO Do not ignore the filterName
-		filterList.add(filter);
-	}
-
-	/* (non-Javadoc)
-	 * @see de.csenk.gwtws.shared.IoFilterChain#getFirst()
-	 */
-	@Override
-	public synchronized IoFilter getFirst() {
-		if (filterList.isEmpty())
-			return null;
+public class ExtendedFilterChainImpl extends FilterChainImpl implements ExtendedFilterChain {
 		
-		return filterList.get(0);
+	/**
+	 * @param connection
+	 * @param socketSender
+	 */
+	public ExtendedFilterChainImpl(Connection connection, Sender socketSender) {
+		super(connection, socketSender);
+		// TODO Auto-generated constructor stub
 	}
 
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.ExtendedFilterChain#fireSendMessage(de.csenk.gwtws.shared.Connection, java.lang.Object)
+	 */
+	@Override
+	public void fireSendMessage(Connection connection, Object message) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 }

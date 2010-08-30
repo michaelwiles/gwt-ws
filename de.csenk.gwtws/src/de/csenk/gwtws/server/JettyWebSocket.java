@@ -15,15 +15,12 @@
 
 package de.csenk.gwtws.server;
 
-import java.io.IOException;
-
 import org.eclipse.jetty.websocket.WebSocket;
 
-import de.csenk.gwtws.server.filter.ServerFilterChainImpl;
-import de.csenk.gwtws.shared.IoConnection;
-import de.csenk.gwtws.shared.IoFilterChain;
-import de.csenk.gwtws.shared.IoHandler;
-import de.csenk.gwtws.shared.IoService;
+import de.csenk.gwtws.shared.Connection;
+import de.csenk.gwtws.shared.FilterChain;
+import de.csenk.gwtws.shared.Handler;
+import de.csenk.gwtws.shared.Service;
 
 /**
  * @author senk.christian@googlemail.com
@@ -31,18 +28,17 @@ import de.csenk.gwtws.shared.IoService;
  * @time 13:56:30
  *
  */
-public class JettyWebSocket implements WebSocket, IoService {
+public class JettyWebSocket implements WebSocket, Service {
 
-	private final IoHandler handler;
-	private final IoFilterChain filterChain = new ServerFilterChainImpl();
+	private final Handler handler;
 	
 	private Outbound outbound;
-	private IoConnection outboundConnection;
+	private Connection outboundConnection;
 	
 	/**
 	 * @param handler
 	 */
-	public JettyWebSocket(final IoHandler handler) {
+	public JettyWebSocket(final Handler handler) {
 		this.handler = handler;
 	}
 	
@@ -52,13 +48,7 @@ public class JettyWebSocket implements WebSocket, IoService {
 	@Override
 	public void onConnect(Outbound outbound) {
 		this.outbound = outbound;
-		outboundConnection = createOutboundConnection(outbound);
-		
-		try {
-			handler.onConnectionOpened(outboundConnection);
-		} catch (Throwable e) {
-			handler.onExceptionCaught(e);
-		}
+		outboundConnection = new OutboundConnection();
 	}
 
 	/* (non-Javadoc)
@@ -66,11 +56,8 @@ public class JettyWebSocket implements WebSocket, IoService {
 	 */
 	@Override
 	public void onDisconnect() {
-		try {
-			handler.onConnectionClosed(outboundConnection);
-		} catch (Throwable e) {
-			handler.onExceptionCaught(e);
-		}
+		// TODO Auto-generated method stub
+		
 	}
 
 	/* (non-Javadoc)
@@ -78,7 +65,8 @@ public class JettyWebSocket implements WebSocket, IoService {
 	 */
 	@Override
 	public void onMessage(byte arg0, String message) {
-		receiveMessage(message);
+		// TODO Auto-generated method stub
+		
 	}
 
 	/* (non-Javadoc)
@@ -86,80 +74,25 @@ public class JettyWebSocket implements WebSocket, IoService {
 	 */
 	@Override
 	public void onMessage(byte arg0, byte[] messageBytes, int messageOffset, int messageLength) {
-		receiveMessage(new String(messageBytes, messageOffset, messageLength));
-	}
-
-	/* (non-Javadoc)
-	 * @see de.csenk.websocket.shared.IoService#getFilterChain()
-	 */
-	@Override
-	public IoFilterChain getFilterChain() {
-		return filterChain;
+		// TODO Auto-generated method stub
+		
 	}
 
 	/* (non-Javadoc)
 	 * @see de.csenk.websocket.shared.IoService#getHandler()
 	 */
 	@Override
-	public IoHandler getHandler() {
+	public Handler getHandler() {
 		return handler;
 	}
 
-	/**
-	 * @param message
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.Service#getFilterChainBuilder()
 	 */
-	private void sendMessage(Object message) {
-		//TODO Filter message
-		
-		Object filteredMessage = message;
-		assert filteredMessage instanceof String;
-		
-		try {
-			outbound.sendMessage(WebSocket.SENTINEL_FRAME, (String) filteredMessage);
-		} catch (IOException e) {
-			handler.onExceptionCaught(e);
-		}
-		
-		try {
-			handler.onMessageSent(outboundConnection, message);
-		} catch (Throwable e) {
-			handler.onExceptionCaught(e);
-		}
+	@Override
+	public FilterChain getFilterChain() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	/**
-	 * @param message
-	 */
-	private void receiveMessage(String message) {
-		//TODO Filter message
 		
-		Object filteredMessage = message;
-		
-		try {
-			handler.onMessageReceived(outboundConnection, filteredMessage);
-		} catch (Throwable e) {
-			handler.onExceptionCaught(e);
-		}
-	}
-	
-	/**
-	 * @param outbound
-	 * @return
-	 */
-	private IoConnection createOutboundConnection(final Outbound outbound) {
-		return new IoConnection() {
-
-			@Override
-			public void close() {
-				outbound.disconnect();
-			}
-
-			@Override
-			public void sendMessage(Object message) {
-				JettyWebSocket.this.sendMessage(message);
-			}
-			
-		};
-	}
-	
 }

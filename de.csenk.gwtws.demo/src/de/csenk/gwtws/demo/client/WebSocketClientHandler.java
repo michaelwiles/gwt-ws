@@ -18,8 +18,8 @@ package de.csenk.gwtws.demo.client;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.core.client.GWT;
 
-import de.csenk.gwtws.shared.IoConnection;
-import de.csenk.gwtws.shared.IoHandler;
+import de.csenk.gwtws.shared.Connection;
+import de.csenk.gwtws.shared.Handler;
 import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
 
 
@@ -29,7 +29,7 @@ import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
  * @time 15:44:06
  *
  */
-public class WebSocketClientHandler implements IoHandler {
+public class WebSocketClientHandler implements Handler {
 	
 	private final GWTSerializer serializer = GWT.create(GWTSerializer.class);
 	
@@ -37,7 +37,7 @@ public class WebSocketClientHandler implements IoHandler {
 	 * @see de.csenk.websocket.shared.IoHandler#onConnectionClosed(de.csenk.websocket.shared.IoConnection)
 	 */
 	@Override
-	public void onConnectionClosed(IoConnection connection) {
+	public void onConnectionClosed(Connection connection) {
 		Log.info("Connection closed");
 	}
 
@@ -45,12 +45,12 @@ public class WebSocketClientHandler implements IoHandler {
 	 * @see de.csenk.websocket.shared.IoHandler#onConnectionOpened(de.csenk.websocket.shared.IoConnection)
 	 */
 	@Override
-	public void onConnectionOpened(IoConnection connection) throws Exception {
+	public void onConnectionOpened(Connection connection) throws Exception {
 		Log.info("Connection opened");
 		
 		for (int i = 0; i < 10; i++) {
-			connection.sendMessage(serializer.serialize(i));
-			connection.sendMessage(serializer.serialize("#" + i));
+			connection.send(serializer.serialize(i));
+			connection.send(serializer.serialize("#" + i));
 		}
 	}
 
@@ -66,7 +66,7 @@ public class WebSocketClientHandler implements IoHandler {
 	 * @see de.csenk.websocket.shared.IoHandler#onMessageReceived(de.csenk.websocket.shared.IoConnection, java.lang.Object)
 	 */
 	@Override
-	public void onMessageReceived(IoConnection connection, Object message) {
+	public void onMessageReceived(Connection connection, Object message) {
 		// TODO Auto-generated method stub
 
 	}
@@ -75,7 +75,7 @@ public class WebSocketClientHandler implements IoHandler {
 	 * @see de.csenk.websocket.shared.IoHandler#onMessageSent(de.csenk.websocket.shared.IoConnection, java.lang.Object)
 	 */
 	@Override
-	public void onMessageSent(IoConnection connection, Object message) {
+	public void onMessageSent(Connection connection, Object message) {
 		// TODO Auto-generated method stub
 
 	}

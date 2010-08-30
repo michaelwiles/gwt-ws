@@ -16,8 +16,8 @@
 package de.csenk.gwtws.demo.server;
 
 import de.csenk.gwtws.server.filter.serialization.ServerGWTSerializer;
-import de.csenk.gwtws.shared.IoConnection;
-import de.csenk.gwtws.shared.IoHandler;
+import de.csenk.gwtws.shared.Connection;
+import de.csenk.gwtws.shared.Handler;
 
 
 /**
@@ -26,7 +26,7 @@ import de.csenk.gwtws.shared.IoHandler;
  * @time 15:42:17
  *
  */
-public class WebSocketServerHandler implements IoHandler {
+public class WebSocketServerHandler implements Handler {
 
 	private final ServerGWTSerializer serverSerializer = new ServerGWTSerializer();
 	
@@ -34,7 +34,7 @@ public class WebSocketServerHandler implements IoHandler {
 	 * @see de.csenk.websocket.shared.IoHandler#onConnectionClosed(de.csenk.websocket.shared.IoConnection)
 	 */
 	@Override
-	public void onConnectionClosed(IoConnection connection) {
+	public void onConnectionClosed(Connection connection) {
 		System.out.println("Connection closed");
 	}
 
@@ -42,7 +42,7 @@ public class WebSocketServerHandler implements IoHandler {
 	 * @see de.csenk.websocket.shared.IoHandler#onConnectionOpened(de.csenk.websocket.shared.IoConnection)
 	 */
 	@Override
-	public void onConnectionOpened(IoConnection connection) {
+	public void onConnectionOpened(Connection connection) {
 		System.out.println(Thread.currentThread().getContextClassLoader().toString());
 		System.out.println("Connection opened");
 	}
@@ -59,7 +59,7 @@ public class WebSocketServerHandler implements IoHandler {
 	 * @see de.csenk.websocket.shared.IoHandler#onMessageReceived(de.csenk.websocket.shared.IoConnection, java.lang.Object)
 	 */
 	@Override
-	public void onMessageReceived(IoConnection connection, Object message) throws Exception {
+	public void onMessageReceived(Connection connection, Object message) throws Exception {
 		System.out.println(Thread.currentThread().getContextClassLoader().toString());
 		Object obj = serverSerializer.deserialize((String) message);
 		System.out.println(obj.getClass().getName() + ": " + obj.toString());
@@ -69,7 +69,7 @@ public class WebSocketServerHandler implements IoHandler {
 	 * @see de.csenk.websocket.shared.IoHandler#onMessageSent(de.csenk.websocket.shared.IoConnection, java.lang.Object)
 	 */
 	@Override
-	public void onMessageSent(IoConnection connection, Object message) {
+	public void onMessageSent(Connection connection, Object message) {
 		// TODO Auto-generated method stub
 
 	}

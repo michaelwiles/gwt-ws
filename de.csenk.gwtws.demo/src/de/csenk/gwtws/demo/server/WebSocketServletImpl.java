@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketServlet;
 
-import de.csenk.gwtws.server.JettyWebSocket;
+import de.csenk.gwtws.server.jetty.JettyWebSocket;
 
 /**
  * @author senk.christian@googlemail.com

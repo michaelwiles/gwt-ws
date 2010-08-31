@@ -71,13 +71,4 @@ public class WebSocketClientHandler implements Handler {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see de.csenk.websocket.shared.IoHandler#onMessageSent(de.csenk.websocket.shared.IoConnection, java.lang.Object)
-	 */
-	@Override
-	public void onMessageSent(Connection connection, Object message) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

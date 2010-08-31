@@ -65,13 +65,4 @@ public class WebSocketServerHandler implements Handler {
 		System.out.println(obj.getClass().getName() + ": " + obj.toString());
 	}
 
-	/* (non-Javadoc)
-	 * @see de.csenk.websocket.shared.IoHandler#onMessageSent(de.csenk.websocket.shared.IoConnection, java.lang.Object)
-	 */
-	@Override
-	public void onMessageSent(Connection connection, Object message) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

@@ -16,24 +16,23 @@
 package de.csenk.gwtws.shared.filter;
 
 import de.csenk.gwtws.shared.Connection;
+import de.csenk.gwtws.shared.Filter;
 
 /**
  * @author Christian.Senk
- * @date 30.08.2010
- * @time 11:17:13
+ * @date 31.08.2010
+ * @time 15:41:34
  *
  */
-final class TailFilter extends FilterImpl {
+public class FilterImpl implements Filter {
 
-	public static final String NAME = "tail";
-	
 	/* (non-Javadoc)
 	 * @see de.csenk.gwtws.shared.Filter#onConnectionClosed(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection)
 	 */
 	@Override
 	public void onConnectionClosed(NextFilter nextFilter, Connection connection)
 			throws Exception {
-		connection.getHandler().onConnectionClosed(connection);
+		nextFilter.onConnectionClosed(connection);
 	}
 
 	/* (non-Javadoc)
@@ -42,7 +41,33 @@ final class TailFilter extends FilterImpl {
 	@Override
 	public void onConnectionOpened(NextFilter nextFilter, Connection connection)
 			throws Exception {
-		connection.getHandler().onConnectionOpened(connection);
+		nextFilter.onConnectionOpened(connection);
+	}
+
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.Filter#onExceptionCaught(de.csenk.gwtws.shared.Filter.NextFilter, java.lang.Throwable)
+	 */
+	@Override
+	public void onExceptionCaught(NextFilter nextFilter, Connection connection, Throwable caught) {
+		nextFilter.onExceptionCaught(connection, caught);
+	}
+
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.Filter#onMessageReceived(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)
+	 */
+	@Override
+	public void onMessageReceived(NextFilter nextFilter, Connection connection,
+			Object message) throws Exception {
+		nextFilter.onMessageReceived(connection, message);
+	}
+
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.Filter#onSendMessage(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)
+	 */
+	@Override
+	public void onSend(NextFilter nextFilter, Connection connection,
+			Object message) throws Exception {
+		nextFilter.onSend(connection, message);
 	}
 
 }

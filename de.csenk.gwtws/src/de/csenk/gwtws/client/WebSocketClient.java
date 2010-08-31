@@ -33,6 +33,8 @@ public class WebSocketClient implements Connection {
 
 	private final Handler handler;
 	private final WebSocket webSocket;
+	private final Sender webSocketSender;
+	
 	private final FilterChain filterChain;
 	
 	/**
@@ -43,6 +45,7 @@ public class WebSocketClient implements Connection {
 		this.handler = handler;
 		this.webSocket = createWebSocket(url);
 		
+		this.webSocketSender = new WebSocketSender(webSocket);
 		this.filterChain = new FilterChainImpl(this);
 	}
 
@@ -75,8 +78,7 @@ public class WebSocketClient implements Connection {
 	 */
 	@Override
 	public Sender getSender() {
-		// TODO Auto-generated method stub
-		return null;
+		return webSocketSender;
 	}
 
 	/* (non-Javadoc)
@@ -84,7 +86,7 @@ public class WebSocketClient implements Connection {
 	 */
 	@Override
 	public void send(Object message) {
-		filterChain.fireSendMessage(this, message);
+		filterChain.fireSend(message);
 	}
 		
 	/**
@@ -96,27 +98,24 @@ public class WebSocketClient implements Connection {
 			
 			@Override
 			public void onOpen(WebSocket webSocket) {
-				// TODO Auto-generated method stub
-				
+				filterChain.fireConnectionOpened();
 			}
 			
 			@Override
 			public void onMessage(WebSocket webSocket, String message) {
-				// TODO Auto-generated method stub
-				
+				filterChain.fireMessageReceived(message);
 			}
 			
 			@Override
 			public void onError(WebSocket webSocket) {
-				// TODO Auto-generated method stub
-				
+				filterChain.fireExceptionCaught(new IllegalStateException("JavaScript implementation of WebSocket thrown an unknown exception."));
 			}
 			
 			@Override
 			public void onClose(WebSocket webSocket) {
-				// TODO Auto-generated method stub
-				
+				filterChain.fireConnectionClosed();
 			}
+			
 		});
 	}
 	

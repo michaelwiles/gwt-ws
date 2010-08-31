@@ -32,26 +32,30 @@ public interface FilterChain {
 	void addLast(String filterName, Filter filter);
 	
 	/**
-	 * @param connection
 	 * @param message
 	 */
-	void fireSendMessage(Connection connection, Object message);
+	void fireSend(Object message);
 	
 	/**
-	 * @param connection
+	 * 
 	 */
-	void fireConnectionOpened(Connection connection);
+	void fireConnectionOpened();
+	
 	
 	/**
-	 * @param connection
+	 * 
 	 */
-	void fireConnectionClosed(Connection connection);
+	void fireConnectionClosed();
 	
 	/**
-	 * @param connection
 	 * @param caught
 	 */
-	void fireExceptionCaught(Connection connection, Throwable caught);
+	void fireExceptionCaught(Throwable caught);
+	
+	/**
+	 * @param message
+	 */
+	void fireMessageReceived(Object message);
 	
 	/**
 	 * @author Christian.Senk

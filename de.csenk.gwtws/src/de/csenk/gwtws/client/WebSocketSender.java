@@ -13,31 +13,33 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.shared.filter;
+package de.csenk.gwtws.client;
 
-import de.csenk.gwtws.shared.Connection;
+import java.io.IOException;
+
+import de.csenk.gwtws.client.js.WebSocket;
 import de.csenk.gwtws.shared.Sender;
 
 /**
  * @author Christian.Senk
- * @date 30.08.2010
- * @time 11:16:41
+ * @date 31.08.2010
+ * @time 15:38:55
  *
  */
-final class HeadFilter extends FilterImpl {
+public class WebSocketSender implements Sender {
 
-	public static final String NAME = "head";
+	private final WebSocket webSocket;
+	
+	public WebSocketSender(WebSocket webSocket) {
+		this.webSocket = webSocket;
+	}
 	
 	/* (non-Javadoc)
-	 * @see de.csenk.gwtws.shared.Filter#onSendMessage(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)
+	 * @see de.csenk.gwtws.shared.Sender#send(java.lang.String)
 	 */
 	@Override
-	public void onSend(NextFilter nextFilter, Connection connection,
-			Object message) throws Exception {
-		assert message instanceof String;
-		
-		Sender sender = connection.getSender();
-		sender.send((String) message);
+	public void send(String message) throws IOException {
+		webSocket.send(message);
 	}
 
 }

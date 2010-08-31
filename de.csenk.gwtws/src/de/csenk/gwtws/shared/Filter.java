@@ -38,7 +38,7 @@ public interface Filter {
 	/**
 	 * @param caught
 	 */
-	void onExceptionCaught(NextFilter nextFilter, Throwable caught);
+	void onExceptionCaught(NextFilter nextFilter, Connection connection, Throwable caught);
 
 	/**
 	 * @param connection
@@ -48,19 +48,12 @@ public interface Filter {
 			Object message) throws Exception;
 
 	/**
-	 * @param connection
-	 * @param message
-	 */
-	void onMessageSent(NextFilter nextFilter, Connection connection,
-			Object message) throws Exception;
-
-	/**
 	 * @param nextFilter
 	 * @param connection
 	 * @param message
 	 * @throws Exception
 	 */
-	void onSendMessage(NextFilter nextFilter, Connection connection,
+	void onSend(NextFilter nextFilter, Connection connection,
 			Object message) throws Exception;
 
 	/**
@@ -84,7 +77,7 @@ public interface Filter {
 		/**
 		 * @param caught
 		 */
-		void onExceptionCaught(Throwable caught);
+		void onExceptionCaught(Connection connection, Throwable caught);
 
 		/**
 		 * @param connection
@@ -96,16 +89,9 @@ public interface Filter {
 		/**
 		 * @param connection
 		 * @param message
-		 */
-		void onMessageSent(Connection connection, Object message)
-				throws Exception;
-
-		/**
-		 * @param connection
-		 * @param message
 		 * @throws Exception
 		 */
-		void onSendMessage(Connection connection, Object message)
+		void onSend(Connection connection, Object message)
 				throws Exception;
 
 	}

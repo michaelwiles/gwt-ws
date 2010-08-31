@@ -15,9 +15,6 @@
 
 package de.csenk.gwtws.shared.filter;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.Filter;
 import de.csenk.gwtws.shared.FilterChain;
@@ -31,19 +28,19 @@ import de.csenk.gwtws.shared.Filter.NextFilter;
  */
 public class FilterChainImpl implements FilterChain {
 
+	//private final Map<String, Entry> filterMap = new HashMap<String, Entry>();
+
 	private final Connection connection;
-	
-	private final Map<String, Entry> filterMap = new HashMap<String, Entry>();
 
 	private final EntryImpl tailEntry;
 	private final EntryImpl headEntry;
 
 	public FilterChainImpl(Connection connection) {
 		this.connection = connection;
-		
+
 		tailEntry = new EntryImpl(TailFilter.NAME, new TailFilter(), null, null);
-		headEntry = new EntryImpl(HeadFilter.NAME, new HeadFilter(connection),
-				null, tailEntry);
+		headEntry = new EntryImpl(HeadFilter.NAME, new HeadFilter(), null,
+				tailEntry);
 		tailEntry.prevEntry = headEntry;
 	}
 
@@ -55,16 +52,32 @@ public class FilterChainImpl implements FilterChain {
 	 */
 	@Override
 	public void addLast(String filterName, Filter filter) {
-		// TODO Auto-generated method stub
-
+		insertFilter(headEntry, filterName, filter);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.csenk.gwtws.shared.FilterChain#fireSendMessage(de.csenk.gwtws.shared.Connection, java.lang.Object)
+	/**
+	 * @param prevEntry
+	 * @param name
+	 * @param filter
+	 */
+	private void insertFilter(EntryImpl prevEntry, String name, Filter filter) {
+		EntryImpl nextEntry = prevEntry.nextEntry;
+		EntryImpl newEntry = new EntryImpl(name, filter, prevEntry, nextEntry);
+		
+		prevEntry.nextEntry = newEntry;
+		nextEntry.prevEntry = newEntry;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.csenk.gwtws.shared.FilterChain#fireSendMessage(de.csenk.gwtws.shared
+	 * .Connection, java.lang.Object)
 	 */
 	@Override
-	public void fireSendMessage(Connection connection, Object message) {
-		callPreviousSendMessage(tailEntry, connection, message);
+	public void fireSend(Object message) {
+		callPreviousSendMessage(tailEntry, message);
 	}
 
 	/**
@@ -72,58 +85,92 @@ public class FilterChainImpl implements FilterChain {
 	 * @param connection
 	 * @param message
 	 */
-	private void callPreviousSendMessage(Entry filterEntry,
-			Connection connection, Object message) {
+	private void callPreviousSendMessage(Entry filterEntry, Object message) {
+		if (filterEntry == null)
+			return;
+		
 		try {
 			Filter filter = filterEntry.getFilter();
 			NextFilter nextFilter = filterEntry.getNextFilter();
-			
-			filter.onSendMessage(nextFilter, connection, message);
+
+			filter.onSend(nextFilter, connection, message);
 		} catch (Throwable e) {
-			fireExceptionCaught(connection, e);
+			fireExceptionCaught(e);
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see de.csenk.gwtws.shared.FilterChain#fireExceptionCaught(de.csenk.gwtws.shared.Connection, java.lang.Throwable)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.csenk.gwtws.shared.FilterChain#fireExceptionCaught(de.csenk.gwtws.
+	 * shared.Connection, java.lang.Throwable)
 	 */
 	@Override
-	public void fireExceptionCaught(Connection connection, Throwable caught) {
-		// TODO Auto-generated method stub
-		
+	public void fireExceptionCaught(Throwable caught) {
+		callNextExceptionCaught(headEntry, caught);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.csenk.gwtws.shared.FilterChain#fireConnectionClosed(de.csenk.gwtws.shared.Connection)
-	 */
-	@Override
-	public void fireConnectionClosed(Connection connection) {
-		callNextConnectionClosed(headEntry, connection);
-	}
-	
 	/**
 	 * @param filterEntry
 	 * @param connection
 	 * @param message
 	 */
-	private void callNextConnectionClosed(Entry filterEntry,
-			Connection connection) {
+	private void callNextExceptionCaught(Entry filterEntry, Throwable caught) {
+		if (filterEntry == null)
+			return;
+		
 		try {
 			Filter filter = filterEntry.getFilter();
 			NextFilter nextFilter = filterEntry.getNextFilter();
-			
+
+			filter.onExceptionCaught(nextFilter, connection, caught);
+		} catch (Throwable e) {
+			fireExceptionCaught(e);
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.csenk.gwtws.shared.FilterChain#fireConnectionClosed(de.csenk.gwtws
+	 * .shared.Connection)
+	 */
+	@Override
+	public void fireConnectionClosed() {
+		callNextConnectionClosed(headEntry);
+	}
+
+	/**
+	 * @param filterEntry
+	 * @param connection
+	 * @param message
+	 */
+	private void callNextConnectionClosed(Entry filterEntry) {
+		if (filterEntry == null)
+			return;
+		
+		try {
+			Filter filter = filterEntry.getFilter();
+			NextFilter nextFilter = filterEntry.getNextFilter();
+
 			filter.onConnectionClosed(nextFilter, connection);
 		} catch (Throwable e) {
-			fireExceptionCaught(connection, e);
+			fireExceptionCaught(e);
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see de.csenk.gwtws.shared.FilterChain#fireConnectionOpened(de.csenk.gwtws.shared.Connection)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.csenk.gwtws.shared.FilterChain#fireConnectionOpened(de.csenk.gwtws
+	 * .shared.Connection)
 	 */
 	@Override
-	public void fireConnectionOpened(Connection connection) {
-		callNextConnectionOpened(headEntry, connection);
+	public void fireConnectionOpened() {
+		callNextConnectionOpened(headEntry);
 	}
 
 	/**
@@ -131,18 +178,51 @@ public class FilterChainImpl implements FilterChain {
 	 * @param connection
 	 * @param message
 	 */
-	private void callNextConnectionOpened(Entry filterEntry,
-			Connection connection) {
+	private void callNextConnectionOpened(Entry filterEntry) {
+		if (filterEntry == null)
+			return;
+		
 		try {
 			Filter filter = filterEntry.getFilter();
 			NextFilter nextFilter = filterEntry.getNextFilter();
-			
+
 			filter.onConnectionOpened(nextFilter, connection);
 		} catch (Throwable e) {
-			fireExceptionCaught(connection, e);
+			fireExceptionCaught(e);
 		}
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.csenk.gwtws.shared.FilterChain#fireMessageReceived(de.csenk.gwtws.
+	 * shared.Connection, java.lang.Object)
+	 */
+	@Override
+	public void fireMessageReceived(Object message) {
+		callNextMessageReceived(headEntry, message);
+	}
+
+	/**
+	 * @param filterEntry
+	 * @param connection
+	 * @param message
+	 */
+	private void callNextMessageReceived(Entry filterEntry, Object message) {
+		if (filterEntry == null)
+			return;
+		
+		try {
+			Filter filter = filterEntry.getFilter();
+			NextFilter nextFilter = filterEntry.getNextFilter();
+
+			filter.onMessageReceived(nextFilter, connection, message);
+		} catch (Throwable e) {
+			fireExceptionCaught(e);
+		}
+	}
+
 	/**
 	 * @author Christian.Senk
 	 * @date 30.08.2010
@@ -211,42 +291,34 @@ public class FilterChainImpl implements FilterChain {
 			return new NextFilter() {
 
 				@Override
-				public void onSendMessage(Connection connection, Object message)
+				public void onSend(Connection connection, Object message)
 						throws Exception {
-					callPreviousSendMessage(prevEntry, connection, message);
-				}
-
-				@Override
-				public void onMessageSent(Connection connection, Object message)
-						throws Exception {
-					// TODO Auto-generated method stub
-
+					callPreviousSendMessage(prevEntry, message);
 				}
 
 				@Override
 				public void onMessageReceived(Connection connection,
 						Object message) throws Exception {
-					// TODO Auto-generated method stub
-
+					callNextMessageReceived(nextEntry, message);
 				}
 
 				@Override
-				public void onExceptionCaught(Throwable caught) {
-					// TODO Auto-generated method stub
-
+				public void onExceptionCaught(Connection connection, Throwable caught) {
+					callNextExceptionCaught(nextEntry, caught);
 				}
 
 				@Override
 				public void onConnectionOpened(Connection connection)
 						throws Exception {
-					callNextConnectionOpened(nextEntry, connection);
+					callNextConnectionOpened(nextEntry);
 				}
 
 				@Override
 				public void onConnectionClosed(Connection connection)
 						throws Exception {
-					callNextConnectionClosed(nextEntry, connection);
+					callNextConnectionClosed(nextEntry);
 				}
+
 			};
 		}
 

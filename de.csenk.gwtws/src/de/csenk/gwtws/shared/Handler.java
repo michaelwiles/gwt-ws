@@ -44,10 +44,4 @@ public interface Handler {
 	 */
 	void onMessageReceived(Connection connection, Object message) throws Exception;
 	
-	/**
-	 * @param connection
-	 * @param message
-	 */
-	void onMessageSent(Connection connection, Object message) throws Exception;
-	
 }

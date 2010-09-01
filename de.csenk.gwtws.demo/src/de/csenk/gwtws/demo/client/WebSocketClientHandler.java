@@ -15,8 +15,12 @@
 
 package de.csenk.gwtws.demo.client;
 
-import com.allen_sauer.gwt.log.client.Log;
+import java.util.Date;
 
+import com.allen_sauer.gwt.log.client.Log;
+import com.google.gwt.user.client.Timer;
+
+import de.csenk.gwtws.demo.shared.Ping;
 import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.Handler;
 
@@ -28,6 +32,8 @@ import de.csenk.gwtws.shared.Handler;
  *
  */
 public class WebSocketClientHandler implements Handler {
+	
+	private Timer pingTimer;
 	
 	/* (non-Javadoc)
 	 * @see de.csenk.websocket.shared.IoHandler#onConnectionClosed(de.csenk.websocket.shared.IoConnection)
@@ -41,13 +47,18 @@ public class WebSocketClientHandler implements Handler {
 	 * @see de.csenk.websocket.shared.IoHandler#onConnectionOpened(de.csenk.websocket.shared.IoConnection)
 	 */
 	@Override
-	public void onConnectionOpened(Connection connection) throws Exception {
+	public void onConnectionOpened(final Connection connection) throws Exception {
 		Log.info("Connection opened");
 		
-		for (int i = 0; i < 10; i++) {
-			connection.send(i);
-			connection.send("#" + i);
-		}
+		pingTimer = new Timer() {
+
+			@Override
+			public void run() {
+				connection.send(new Ping(new Date().getTime()));
+			}
+			
+		};
+		pingTimer.scheduleRepeating(1000);
 	}
 
 	/* (non-Javadoc)
@@ -63,8 +74,10 @@ public class WebSocketClientHandler implements Handler {
 	 */
 	@Override
 	public void onMessageReceived(Connection connection, Object message) {
-		// TODO Auto-generated method stub
-
+		Ping pingPacket = (Ping) message;
+		
+		long delay = new Date().getTime() - pingPacket.getTimestamp();
+		Log.info("Actual ping is " + delay + "ms");
 	}
 
 }

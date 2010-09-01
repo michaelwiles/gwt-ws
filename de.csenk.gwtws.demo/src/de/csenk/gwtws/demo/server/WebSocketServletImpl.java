@@ -20,8 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketServlet;
 
+import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
+
 import de.csenk.gwtws.server.filter.serialization.GWTServerSerializationFilter;
+import de.csenk.gwtws.server.filter.serialization.ServletContextSerializationPolicyProvider;
 import de.csenk.gwtws.server.jetty.JettyWebSocket;
+import de.csenk.gwtws.shared.Filter;
 import de.csenk.gwtws.shared.FilterChain;
 
 /**
@@ -41,10 +45,19 @@ public class WebSocketServletImpl extends WebSocketServlet {
 	protected WebSocket doWebSocketConnect(HttpServletRequest arg0, String arg1) {
 		JettyWebSocket webSocket = new JettyWebSocket(new WebSocketServerHandler());
 		
-		FilterChain filterChain = webSocket.getFilterChain();	
-		filterChain.addLast("serialization", new GWTServerSerializationFilter());
+		buildFilterChain(webSocket.getFilterChain());
 		
 		return webSocket;
+	}
+
+	/**
+	 * @param filterChain
+	 */
+	private void buildFilterChain(FilterChain filterChain) {
+		SerializationPolicyProvider serialProvider = new ServletContextSerializationPolicyProvider(getServletContext());
+		Filter serialFilter = new GWTServerSerializationFilter(serialProvider);
+		
+		filterChain.addLast("serialization", serialFilter);
 	}
 
 }

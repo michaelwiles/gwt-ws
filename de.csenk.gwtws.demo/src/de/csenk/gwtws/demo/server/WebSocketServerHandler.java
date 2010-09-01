@@ -15,6 +15,9 @@
 
 package de.csenk.gwtws.demo.server;
 
+import java.util.Date;
+
+import de.csenk.gwtws.demo.shared.Ping;
 import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.Handler;
 
@@ -56,7 +59,12 @@ public class WebSocketServerHandler implements Handler {
 	 */
 	@Override
 	public void onMessageReceived(Connection connection, Object message) throws Exception {
-		System.out.println(message);
+		Ping pingPacket = (Ping) message;
+		
+		long delay = new Date().getTime() - pingPacket.getTimestamp();
+		System.out.println("Received ping with a delay of " + delay + "ms, sending the ping back to the client");
+		
+		connection.send(pingPacket);
 	}
 
 }

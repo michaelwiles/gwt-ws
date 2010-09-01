@@ -15,7 +15,6 @@
 
 package de.csenk.gwtws.demo.server;
 
-import de.csenk.gwtws.server.filter.serialization.ServerGWTSerializer;
 import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.Handler;
 
@@ -27,8 +26,6 @@ import de.csenk.gwtws.shared.Handler;
  *
  */
 public class WebSocketServerHandler implements Handler {
-
-	private final ServerGWTSerializer serverSerializer = new ServerGWTSerializer();
 	
 	/* (non-Javadoc)
 	 * @see de.csenk.websocket.shared.IoHandler#onConnectionClosed(de.csenk.websocket.shared.IoConnection)
@@ -43,7 +40,6 @@ public class WebSocketServerHandler implements Handler {
 	 */
 	@Override
 	public void onConnectionOpened(Connection connection) {
-		System.out.println(Thread.currentThread().getContextClassLoader().toString());
 		System.out.println("Connection opened");
 	}
 
@@ -51,7 +47,7 @@ public class WebSocketServerHandler implements Handler {
 	 * @see de.csenk.websocket.shared.IoHandler#onExceptionCaught(java.lang.Throwable)
 	 */
 	@Override
-	public void onExceptionCaught(Throwable caught) {
+	public void onExceptionCaught(Connection connection, Throwable caught) {
 		caught.printStackTrace();
 	}
 
@@ -60,9 +56,7 @@ public class WebSocketServerHandler implements Handler {
 	 */
 	@Override
 	public void onMessageReceived(Connection connection, Object message) throws Exception {
-		System.out.println(Thread.currentThread().getContextClassLoader().toString());
-		Object obj = serverSerializer.deserialize((String) message);
-		System.out.println(obj.getClass().getName() + ": " + obj.toString());
+		System.out.println(message);
 	}
 
 }

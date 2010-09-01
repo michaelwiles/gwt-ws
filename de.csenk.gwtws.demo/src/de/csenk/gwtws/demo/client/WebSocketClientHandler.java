@@ -16,11 +16,9 @@
 package de.csenk.gwtws.demo.client;
 
 import com.allen_sauer.gwt.log.client.Log;
-import com.google.gwt.core.client.GWT;
 
 import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.Handler;
-import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
 
 
 /**
@@ -30,8 +28,6 @@ import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
  *
  */
 public class WebSocketClientHandler implements Handler {
-	
-	private final GWTSerializer serializer = GWT.create(GWTSerializer.class);
 	
 	/* (non-Javadoc)
 	 * @see de.csenk.websocket.shared.IoHandler#onConnectionClosed(de.csenk.websocket.shared.IoConnection)
@@ -49,8 +45,8 @@ public class WebSocketClientHandler implements Handler {
 		Log.info("Connection opened");
 		
 		for (int i = 0; i < 10; i++) {
-			connection.send(serializer.serialize(i));
-			connection.send(serializer.serialize("#" + i));
+			connection.send(i);
+			connection.send("#" + i);
 		}
 	}
 
@@ -58,7 +54,7 @@ public class WebSocketClientHandler implements Handler {
 	 * @see de.csenk.websocket.shared.IoHandler#onExceptionCaught(java.lang.Throwable)
 	 */
 	@Override
-	public void onExceptionCaught(Throwable caught) {
+	public void onExceptionCaught(Connection connection, Throwable caught) {
 		Log.error("WebSocketClientHandler.onExceptionCaught", caught);
 	}
 

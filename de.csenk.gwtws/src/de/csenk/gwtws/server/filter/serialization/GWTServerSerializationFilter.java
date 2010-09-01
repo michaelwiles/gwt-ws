@@ -15,6 +15,8 @@
 
 package de.csenk.gwtws.server.filter.serialization;
 
+import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
+
 import de.csenk.gwtws.client.filter.serialization.GWTClientSerializationFilter;
 import de.csenk.gwtws.shared.Connection;
 
@@ -29,10 +31,10 @@ public class GWTServerSerializationFilter extends GWTClientSerializationFilter {
 	private ClassLoader contextClassLoader;
 	
 	/**
-	 * @param gwtSerializer
+	 * @param serializationPolicyProvider
 	 */
-	public GWTServerSerializationFilter() {
-		super(new ServerGWTSerializer());
+	public GWTServerSerializationFilter(SerializationPolicyProvider serializationPolicyProvider) {
+		super(new ServerGWTSerializer(serializationPolicyProvider));
 	}
 
 	/* (non-Javadoc)

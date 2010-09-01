@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.client.rpc.impl.ClientSerializationStreamReader;
 import com.google.gwt.user.client.rpc.impl.ClientSerializationStreamWriter;
 import com.google.gwt.user.client.rpc.impl.Serializer;
 
@@ -55,8 +56,15 @@ public class ClientGWTSerializer implements GWTSerializer {
 	@Override
 	public Object deserialize(String serializedContent)
 			throws SerializationException {
-		// TODO Auto-generated method stub
-		return null;
+		ClientSerializationStreamReader streamReader = new ClientSerializationStreamReader(serializer);
+		streamReader.prepareToRead(serializedContent);
+		
+		String className = streamReader.readString();
+		if (className.equals("java.lang.String")) {
+			return streamReader.readString();
+		} else {
+			return streamReader.readObject();
+		}
 	}
 
 	/*

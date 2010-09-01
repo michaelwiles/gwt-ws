@@ -16,7 +16,10 @@
 package de.csenk.gwtws.server.filter.serialization;
 
 import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.server.rpc.SerializationPolicy;
+import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
 import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamReader;
+import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamWriter;
 
 import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
 
@@ -28,6 +31,16 @@ import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
  */
 public class ServerGWTSerializer implements GWTSerializer {
 
+	private SerializationPolicy serializationPolicy;
+	private final SerializationPolicyProvider serializationPolicyProvider;
+	
+	/**
+	 * @param serializationPolicyProvider
+	 */
+	public ServerGWTSerializer(SerializationPolicyProvider serializationPolicyProvider) {
+		this.serializationPolicyProvider = serializationPolicyProvider;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -38,16 +51,14 @@ public class ServerGWTSerializer implements GWTSerializer {
 	@Override
 	public Object deserialize(String serializedContent)
 			throws SerializationException {
-
-		ClassLoader classLoader = Thread.currentThread()
-				.getContextClassLoader();
-		ServerSerializationStreamReader streamReader = new ServerSerializationStreamReader(
-				classLoader, null);
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		ServerSerializationStreamReader streamReader = new ServerSerializationStreamReader(classLoader, serializationPolicyProvider);
 		streamReader.prepareToRead(serializedContent);
 
-		String objClassName = maybeDeobfuscate(streamReader, streamReader
-				.readString());
-
+		if (serializationPolicy == null)
+			serializationPolicy = streamReader.getSerializationPolicy();
+		
+		String objClassName = maybeDeobfuscate(streamReader, streamReader.readString());
 		try {
 			Class<?> objClass = Class.forName(objClassName, false, classLoader);
 			return streamReader.deserializeValue(objClass);
@@ -65,8 +76,16 @@ public class ServerGWTSerializer implements GWTSerializer {
 	 */
 	@Override
 	public String serialize(Object obj) throws SerializationException {
-		// TODO Auto-generated method stub
-		return null;
+		if (serializationPolicy == null)
+			throw new IllegalStateException("SerializationPolicy is unknown for this connection.");
+		
+		ServerSerializationStreamWriter streamWriter = new ServerSerializationStreamWriter(serializationPolicy);
+		streamWriter.prepareToWrite();
+		
+		streamWriter.writeString(obj.getClass().getName());
+		streamWriter.serializeValue(obj, obj.getClass());
+		
+		return streamWriter.toString();
 	}
 
 	/**
@@ -83,4 +102,5 @@ public class ServerGWTSerializer implements GWTSerializer {
 		}
 		return name;
 	}
+
 }

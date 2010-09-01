@@ -39,7 +39,6 @@ public class ServerGWTSerializer implements GWTSerializer {
 	public Object deserialize(String serializedContent)
 			throws SerializationException {
 
-		System.out.println(Thread.currentThread().getContextClassLoader().toString());
 		ClassLoader classLoader = Thread.currentThread()
 				.getContextClassLoader();
 		ServerSerializationStreamReader streamReader = new ServerSerializationStreamReader(
@@ -51,26 +50,7 @@ public class ServerGWTSerializer implements GWTSerializer {
 
 		try {
 			Class<?> objClass = Class.forName(objClassName, false, classLoader);
-
-//			Class<?> customSerializer = SerializabilityUtil
-//					.hasCustomFieldSerializer(objClass);
-//			if (customSerializer != null) {
-//				for (Method method : customSerializer.getMethods()) {
-//					if ("instantiate".equals(method.getName())) {
-//						Class<?> paramClass = method.getParameterTypes()[0];
-//						Class<?> readerClass = streamReader.getClass();
-//						System.out.println(paramClass.getClassLoader().toString());
-//						System.out.println(readerClass.getClassLoader().toString());
-//						
-//						boolean some = paramClass.isAssignableFrom(readerClass);
-//						Object instance = method.invoke(null, streamReader);
-//					}
-//				}
-//				// Ok to not have one.
-//			}
-
-			 return streamReader.deserializeValue(objClass);
-//			return new Object();
+			return streamReader.deserializeValue(objClass);
 		} catch (ClassNotFoundException e) {
 			throw new SerializationException(e);
 		}

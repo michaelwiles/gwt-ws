@@ -45,4 +45,22 @@ final class TailFilter extends FilterImpl {
 		connection.getHandler().onConnectionOpened(connection);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.filter.FilterImpl#onExceptionCaught(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Throwable)
+	 */
+	@Override
+	public void onExceptionCaught(NextFilter nextFilter, Connection connection,
+			Throwable caught) {
+		connection.getHandler().onExceptionCaught(connection, caught);
+	}
+
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.filter.FilterImpl#onMessageReceived(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)
+	 */
+	@Override
+	public void onMessageReceived(NextFilter nextFilter, Connection connection,
+			Object message) throws Exception {
+		connection.getHandler().onMessageReceived(connection, message);
+	}
+
 }

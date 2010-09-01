@@ -21,6 +21,7 @@ import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.FilterChain;
 import de.csenk.gwtws.shared.Handler;
 import de.csenk.gwtws.shared.Sender;
+import de.csenk.gwtws.shared.filter.FilterChainImpl;
 
 /**
  * @author senk.christian@googlemail.com
@@ -35,11 +36,14 @@ public class JettyWebSocket implements WebSocket, Connection {
 	private Outbound outbound;
 	private Sender sender;
 	
+	private final FilterChain filterChain;
+	
 	/**
 	 * @param handler
 	 */
 	public JettyWebSocket(final Handler handler) {
 		this.handler = handler;
+		this.filterChain = new FilterChainImpl(this);
 	}
 
 	/* (non-Javadoc)
@@ -48,6 +52,7 @@ public class JettyWebSocket implements WebSocket, Connection {
 	@Override
 	public void onConnect(Outbound arg0) {
 		sender = new OutboundSender(arg0);
+		filterChain.fireConnectionOpened();
 	}
 
 	/* (non-Javadoc)
@@ -55,8 +60,7 @@ public class JettyWebSocket implements WebSocket, Connection {
 	 */
 	@Override
 	public void onDisconnect() {
-		// TODO Auto-generated method stub
-		
+		filterChain.fireConnectionClosed();
 	}
 
 	/* (non-Javadoc)
@@ -64,8 +68,7 @@ public class JettyWebSocket implements WebSocket, Connection {
 	 */
 	@Override
 	public void onMessage(byte arg0, String arg1) {
-		// TODO Auto-generated method stub
-		
+		filterChain.fireMessageReceived(arg1);
 	}
 
 	/* (non-Javadoc)
@@ -73,8 +76,7 @@ public class JettyWebSocket implements WebSocket, Connection {
 	 */
 	@Override
 	public void onMessage(byte arg0, byte[] arg1, int arg2, int arg3) {
-		// TODO Auto-generated method stub
-		
+		filterChain.fireMessageReceived(new String(arg1, arg2, arg3));
 	}
 
 	/* (non-Javadoc)
@@ -90,8 +92,7 @@ public class JettyWebSocket implements WebSocket, Connection {
 	 */
 	@Override
 	public FilterChain getFilterChain() {
-		// TODO Auto-generated method stub
-		return null;
+		return filterChain;
 	}
 
 	/* (non-Javadoc)
@@ -115,8 +116,7 @@ public class JettyWebSocket implements WebSocket, Connection {
 	 */
 	@Override
 	public void send(Object message) {
-		// TODO Auto-generated method stub
-		
+		filterChain.fireSend(message);
 	}
 		
 }

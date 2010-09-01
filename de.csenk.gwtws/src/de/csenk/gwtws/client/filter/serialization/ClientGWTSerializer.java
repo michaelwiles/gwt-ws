@@ -77,7 +77,13 @@ public class ClientGWTSerializer implements GWTSerializer {
 			throw new SerializationException("Serializer tried to serialize an unmapped class '" + obj.getClass().getName() + "'");
 		
 		streamWriter.writeString(typeString);
-		streamWriter.writeObject(obj);
+		
+		if (obj instanceof String) {
+			streamWriter.writeString((String) obj);
+		} else {
+			streamWriter.writeObject(obj);
+		}
+				
 		return streamWriter.toString();
 	}
 }

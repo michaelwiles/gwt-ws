@@ -15,6 +15,9 @@
 
 package de.csenk.gwtws.shared.filter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.Filter;
 import de.csenk.gwtws.shared.FilterChain;
@@ -28,7 +31,7 @@ import de.csenk.gwtws.shared.Filter.NextFilter;
  */
 public class FilterChainImpl implements FilterChain {
 
-	//private final Map<String, Entry> filterMap = new HashMap<String, Entry>();
+	private final Map<String, Entry> filterMap = new HashMap<String, Entry>();
 
 	private final Connection connection;
 
@@ -52,7 +55,18 @@ public class FilterChainImpl implements FilterChain {
 	 */
 	@Override
 	public void addLast(String filterName, Filter filter) {
-		insertFilter(headEntry, filterName, filter);
+		checkNameIsNotReserved(filterName);
+		
+		EntryImpl filterEntry = insertFilter(tailEntry.prevEntry, filterName, filter);
+		filterMap.put(filterName, filterEntry);
+	}
+
+	/**
+	 * @param filterName
+	 */
+	private void checkNameIsNotReserved(String filterName) {
+		if (filterMap.containsKey(filterName))
+			throw new IllegalStateException("There is already a filter with name '" + filterName + "'");
 	}
 
 	/**
@@ -60,12 +74,14 @@ public class FilterChainImpl implements FilterChain {
 	 * @param name
 	 * @param filter
 	 */
-	private void insertFilter(EntryImpl prevEntry, String name, Filter filter) {
+	private EntryImpl insertFilter(EntryImpl prevEntry, String name, Filter filter) {
 		EntryImpl nextEntry = prevEntry.nextEntry;
 		EntryImpl newEntry = new EntryImpl(name, filter, prevEntry, nextEntry);
 		
 		prevEntry.nextEntry = newEntry;
 		nextEntry.prevEntry = newEntry;
+		
+		return newEntry;
 	}
 	
 	/*
@@ -77,7 +93,7 @@ public class FilterChainImpl implements FilterChain {
 	 */
 	@Override
 	public void fireSend(Object message) {
-		callPreviousSendMessage(tailEntry, message);
+		callPreviousSend(tailEntry, message);
 	}
 
 	/**
@@ -85,7 +101,7 @@ public class FilterChainImpl implements FilterChain {
 	 * @param connection
 	 * @param message
 	 */
-	private void callPreviousSendMessage(Entry filterEntry, Object message) {
+	private void callPreviousSend(Entry filterEntry, Object message) {
 		if (filterEntry == null)
 			return;
 		
@@ -293,7 +309,7 @@ public class FilterChainImpl implements FilterChain {
 				@Override
 				public void onSend(Connection connection, Object message)
 						throws Exception {
-					callPreviousSendMessage(prevEntry, message);
+					callPreviousSend(prevEntry, message);
 				}
 
 				@Override

@@ -36,7 +36,7 @@ public interface Handler {
 	/**
 	 * @param caught
 	 */
-	void onExceptionCaught(Throwable caught);
+	void onExceptionCaught(Connection connection, Throwable caught);
 	
 	/**
 	 * @param connection

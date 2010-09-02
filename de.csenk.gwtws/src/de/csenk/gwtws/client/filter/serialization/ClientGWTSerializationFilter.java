@@ -1,15 +1,15 @@
 /*
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
+ * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ *  GNU Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
+ *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -20,16 +20,16 @@ import de.csenk.gwtws.shared.filter.FilterImpl;
 import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
 
 /**
- * @author Christian.Senk
+ * @author senk.christian@googlemail.com
  * @date 01.09.2010
  * @time 14:25:40
  *
  */
-public class GWTClientSerializationFilter extends FilterImpl {
+public class ClientGWTSerializationFilter extends FilterImpl {
 
 	private final GWTSerializer serializer;
 	
-	public GWTClientSerializationFilter(GWTSerializer gwtSerializer) {
+	public ClientGWTSerializationFilter(GWTSerializer gwtSerializer) {
 		this.serializer = gwtSerializer;
 	}
 

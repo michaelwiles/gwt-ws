@@ -58,7 +58,7 @@ public interface FilterChain {
 	void fireMessageReceived(Object message);
 	
 	/**
-	 * @author Christian.Senk
+	 * @author senk.christian@googlemail.com
 	 * @date 30.08.2010
 	 * @time 10:45:11
 	 *

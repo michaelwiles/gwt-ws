@@ -13,31 +13,41 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.shared.filter;
+package de.csenk.gwtws.client.filter;
+
+import com.allen_sauer.gwt.log.client.Log;
 
 import de.csenk.gwtws.shared.Connection;
-import de.csenk.gwtws.shared.Sender;
+import de.csenk.gwtws.shared.filter.FilterImpl;
 
 /**
  * @author senk.christian@googlemail.com
- * @date 30.08.2010
- * @time 11:16:41
+ * @date 01.09.2010
+ * @time 14:33:31
  *
  */
-final class HeadFilter extends FilterImpl {
+public class ClientLoggingFilter extends FilterImpl {
 
-	public static final String NAME = "head";
-	
 	/* (non-Javadoc)
-	 * @see de.csenk.gwtws.shared.Filter#onSendMessage(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)
+	 * @see de.csenk.gwtws.shared.filter.FilterImpl#onMessageReceived(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)
+	 */
+	@Override
+	public void onMessageReceived(NextFilter nextFilter, Connection connection,
+			Object message) throws Exception {
+		Log.info(message.toString());
+		
+		super.onMessageReceived(nextFilter, connection, message);
+	}
+
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.shared.filter.FilterImpl#onSend(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)
 	 */
 	@Override
 	public void onSend(NextFilter nextFilter, Connection connection,
 			Object message) throws Exception {
-		assert message instanceof String;
+		Log.info(message.toString());
 		
-		Sender sender = connection.getSender();
-		sender.send((String) message);
+		super.onSend(nextFilter, connection, message);
 	}
 
 }

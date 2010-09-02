@@ -25,7 +25,7 @@ import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
 import de.csenk.gwtws.server.filter.StatisticsFilter;
 import de.csenk.gwtws.server.filter.serialization.ServerGWTSerializationFilter;
 import de.csenk.gwtws.server.filter.serialization.ServletContextSerializationPolicyProvider;
-import de.csenk.gwtws.server.jetty.JettyWebSocket;
+import de.csenk.gwtws.server.jetty.JettyWebSocketConnection;
 import de.csenk.gwtws.shared.Filter;
 import de.csenk.gwtws.shared.FilterChain;
 
@@ -44,11 +44,10 @@ public class WebSocketServletImpl extends WebSocketServlet {
 	 */
 	@Override
 	protected WebSocket doWebSocketConnect(HttpServletRequest arg0, String arg1) {
-		JettyWebSocket webSocket = new JettyWebSocket(new WebSocketServerHandler());
+		JettyWebSocketConnection webSocketConnection = new JettyWebSocketConnection(new WebSocketServerHandler());
+		buildFilterChain(webSocketConnection.getFilterChain());
 		
-		buildFilterChain(webSocket.getFilterChain());
-		
-		return webSocket;
+		return webSocketConnection;
 	}
 
 	/**

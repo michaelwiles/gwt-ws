@@ -19,9 +19,10 @@ package de.csenk.gwtws.demo.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 
-import de.csenk.gwtws.client.WebSocketClient;
+import de.csenk.gwtws.client.JavaScriptWebSocketConnection;
 import de.csenk.gwtws.client.filter.serialization.ClientGWTSerializationFilter;
-import de.csenk.gwtws.client.js.WebSocket;
+import de.csenk.gwtws.client.js.JavaScriptWebSocket;
+import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.FilterChain;
 import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
 
@@ -32,11 +33,11 @@ public class De_csenk_gwtws_demo implements EntryPoint {
 	
 	@Override
 	public void onModuleLoad() {
-		if (!WebSocket.IsSupported())
+		if (!JavaScriptWebSocket.IsSupported())
 			return;
 		
 		String webSocketURL = GWT.getModuleBaseURL().replace("http", "ws") + "webSocket";
-		WebSocketClient webSocketClient = new WebSocketClient(webSocketURL, new WebSocketClientHandler());
+		Connection webSocketClient = new JavaScriptWebSocketConnection(webSocketURL, new WebSocketClientHandler());
 		
 		buildFilterChain(webSocketClient.getFilterChain());
 	}

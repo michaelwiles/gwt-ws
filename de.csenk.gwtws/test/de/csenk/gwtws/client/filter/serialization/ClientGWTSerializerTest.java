@@ -45,6 +45,7 @@ public class ClientGWTSerializerTest extends GWTTestCase {
 		GWTSerializer serializer = GWT.create(GWTSerializer.class);
 		
 		String serializedInteger = serializer.serialize(new Integer(1337));
+		GWT.log(serializedInteger);
 		assertTrue(serializedInteger.contains("java.lang.Integer"));
 	}
 

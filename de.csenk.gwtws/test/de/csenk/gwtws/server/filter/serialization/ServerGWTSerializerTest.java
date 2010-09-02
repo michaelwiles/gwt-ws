@@ -17,23 +17,76 @@ package de.csenk.gwtws.server.filter.serialization;
 
 import junit.framework.TestCase;
 
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+
+import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.server.rpc.RPC;
+import com.google.gwt.user.server.rpc.SerializationPolicy;
+import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
+
 /**
  * @author senk.christian@googlemail.com
  * @date 02.09.2010
  * @time 15:20:51
- *
+ * 
  */
 public class ServerGWTSerializerTest extends TestCase {
 
-	/**
-	 * Test method for {@link de.csenk.gwtws.server.filter.serialization.ServerGWTSerializer#deserialize(java.lang.String)}.
+	private Mockery mockContext;
+
+	private SerializationPolicyProvider policyProvider;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see junit.framework.TestCase#setUp()
 	 */
-	public final void testDeserialize() {
-		fail("Not yet implemented"); // TODO
+	protected void setUp() throws Exception {
+		mockContext = new Mockery();
+
+		policyProvider = mockContext.mock(SerializationPolicyProvider.class);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see junit.framework.TestCase#tearDown()
+	 */
+	protected void tearDown() throws Exception {
+		policyProvider = null;
+
+		mockContext = null;
 	}
 
 	/**
-	 * Test method for {@link de.csenk.gwtws.server.filter.serialization.ServerGWTSerializer#serialize(java.lang.Object)}.
+	 * Test method for
+	 * {@link de.csenk.gwtws.server.filter.serialization.ServerGWTSerializer#deserialize(java.lang.String)}
+	 * .
+	 * @throws SerializationException 
+	 */
+	public final void testDeserialize() throws SerializationException {
+		final String serializedContent = "5|0|3|http://192.168.2.103:62849/de.csenk.gwtws.WebSocket.JUnit/|96917F6B45FCAB06345E921D8490F9EF|java.lang.Integer/3438268394|1|2|3|3|1337|";
+		final SerializationPolicy serializationPolicy = RPC.getDefaultSerializationPolicy();
+		final ServerGWTSerializer serverSerializer = new ServerGWTSerializer(policyProvider);
+
+		mockContext.checking(new Expectations() {
+			{
+				oneOf(policyProvider).getSerializationPolicy(
+						with(any(String.class)), with(any(String.class)));
+					will(returnValue(serializationPolicy));
+			}
+		});
+		
+		Object obj = serverSerializer.deserialize(serializedContent);
+		assertTrue(obj instanceof Integer);
+		assertEquals(new Integer(1337), (Integer) obj);
+	}
+
+	/**
+	 * Test method for
+	 * {@link de.csenk.gwtws.server.filter.serialization.ServerGWTSerializer#serialize(java.lang.Object)}
+	 * .
 	 */
 	public final void testSerialize() {
 		fail("Not yet implemented"); // TODO

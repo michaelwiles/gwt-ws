@@ -15,8 +15,11 @@
 
 package de.csenk.gwtws.client.filter.serialization;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.SerializationException;
+
+import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
 
 /**
  * @author senk.christian@googlemail.com
@@ -29,20 +32,21 @@ public class ClientGWTSerializerTest extends GWTTestCase {
 	/**
 	 * Test method for {@link de.csenk.gwtws.client.filter.serialization.ClientGWTSerializer#deserialize(java.lang.String)}.
 	 */
-//	public final void testDeserialize() {
-//		//fail("Not yet implemented"); // TODO
-//	}
+	public final void testDeserialize() {
+		//fail("Not yet implemented"); // TODO
+	}
 
 	/**
 	 * Test method for {@link de.csenk.gwtws.client.filter.serialization.ClientGWTSerializer#serialize(java.lang.Object)}.
 	 * @throws SerializationException 
 	 */
-//	public final void testSerialize() throws SerializationException {
-//		GWTSerializer serializer = GWT.create(GWTSerializer.class);
-//		
-//		String serializedInteger = serializer.serialize(new Integer(1337));
-//		assertTrue(serializedInteger.contains("java.lang.Integer"));
-//	}
+	public final void testSerialize() throws SerializationException {
+		//Will create a deferred binding deriving from ClientGWTSerializer
+		GWTSerializer serializer = GWT.create(GWTSerializer.class);
+		
+		String serializedInteger = serializer.serialize(new Integer(1337));
+		assertTrue(serializedInteger.contains("java.lang.Integer"));
+	}
 
 	/* (non-Javadoc)
 	 * @see com.google.gwt.junit.client.GWTTestCase#getModuleName()

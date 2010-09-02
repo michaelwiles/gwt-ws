@@ -20,6 +20,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 
 import de.csenk.gwtws.client.JavaScriptWebSocketConnection;
+import de.csenk.gwtws.client.filter.ClientLoggingFilter;
 import de.csenk.gwtws.client.filter.serialization.ClientGWTSerializationFilter;
 import de.csenk.gwtws.client.js.JavaScriptWebSocket;
 import de.csenk.gwtws.shared.Connection;
@@ -48,7 +49,7 @@ public class De_csenk_gwtws_demo implements EntryPoint {
 	private void buildFilterChain(FilterChain filterChain) {
 		GWTSerializer serializer = GWT.create(PacketSerializer.class);
 		
-		//filterChain.addLast("logging", new LoggingFilter());
+		filterChain.addLast("logging", new ClientLoggingFilter());
 		filterChain.addLast("serialization", new ClientGWTSerializationFilter(serializer));
 	}
 	

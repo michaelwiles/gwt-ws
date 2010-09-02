@@ -22,7 +22,8 @@ import org.eclipse.jetty.websocket.WebSocketServlet;
 
 import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
 
-import de.csenk.gwtws.server.filter.serialization.GWTServerSerializationFilter;
+import de.csenk.gwtws.server.filter.StatisticsFilter;
+import de.csenk.gwtws.server.filter.serialization.ServerGWTSerializationFilter;
 import de.csenk.gwtws.server.filter.serialization.ServletContextSerializationPolicyProvider;
 import de.csenk.gwtws.server.jetty.JettyWebSocket;
 import de.csenk.gwtws.shared.Filter;
@@ -55,8 +56,9 @@ public class WebSocketServletImpl extends WebSocketServlet {
 	 */
 	private void buildFilterChain(FilterChain filterChain) {
 		SerializationPolicyProvider serialProvider = new ServletContextSerializationPolicyProvider(getServletContext());
-		Filter serialFilter = new GWTServerSerializationFilter(serialProvider);
+		Filter serialFilter = new ServerGWTSerializationFilter(serialProvider);
 		
+		filterChain.addLast("statistics", new StatisticsFilter());
 		filterChain.addLast("serialization", serialFilter);
 	}
 

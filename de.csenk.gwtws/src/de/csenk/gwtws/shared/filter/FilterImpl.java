@@ -31,7 +31,7 @@ public class FilterImpl implements Filter {
 	 */
 	@Override
 	public void onConnectionClosed(NextFilter nextFilter, Connection connection)
-			throws Exception {
+			throws Throwable {
 		nextFilter.onConnectionClosed(connection);
 	}
 
@@ -40,7 +40,7 @@ public class FilterImpl implements Filter {
 	 */
 	@Override
 	public void onConnectionOpened(NextFilter nextFilter, Connection connection)
-			throws Exception {
+			throws Throwable {
 		nextFilter.onConnectionOpened(connection);
 	}
 
@@ -57,7 +57,7 @@ public class FilterImpl implements Filter {
 	 */
 	@Override
 	public void onMessageReceived(NextFilter nextFilter, Connection connection,
-			Object message) throws Exception {
+			Object message) throws Throwable {
 		nextFilter.onMessageReceived(connection, message);
 	}
 
@@ -66,7 +66,7 @@ public class FilterImpl implements Filter {
 	 */
 	@Override
 	public void onSend(NextFilter nextFilter, Connection connection,
-			Object message) throws Exception {
+			Object message) throws Throwable {
 		nextFilter.onSend(connection, message);
 	}
 

@@ -13,44 +13,43 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.client.js;
+package de.csenk.gwtws.client;
+
+import de.csenk.gwtws.client.js.JavaScriptWebSocket;
 
 /**
  * @author senk.christian@googlemail.com
- * @date 25.08.2010
- * @time 12:08:28
+ * @date 02.09.2010
+ * @time 14:45:42
  *
- * Interface definition to create a call-back for a {@link WebSocket}.
  */
-public interface WebSocketCallback {
+public interface WebSocket {
 
 	/**
-	 * Called if the {@link WebSocket} has opened.
-	 *
-	 * @param webSocket
-	 */
-	void onOpen(WebSocket webSocket);
-	
-	/**
-	 * Called if the {@link WebSocket} was closed.
+	 * Sends a message.
 	 * 
-	 * @param webSocket
+	 * @param message
 	 */
-	void onClose(WebSocket webSocket);
-	
+	public void send(String message);
+
 	/**
-	 * Called if a message arrived in the {@link WebSocket}.
-	 * 
-	 * @param webSocket
-	 * @param message the delivered message.
+	 * Closes this {@link JavaScriptWebSocket}.
 	 */
-	void onMessage(WebSocket webSocket, String message);
-	
+	public void close();
+
 	/**
-	 * Called if an error occurred during the usage of the {@link WebSocket}
-	 *
-	 * @param webSocket
+	 * @return the bufferedAmount property of the underlying JavaScript WebSocket.
 	 */
-	void onError(WebSocket webSocket);
-	
+	public int getBufferedAmount();
+
+	/**
+	 * @return the readyState property of the underlying JavaScript WebSocket.
+	 */
+	public int getReadyState();
+
+	/**
+	 * @return the url property of the underlying JavaScript WebSocket.
+	 */
+	public String getURL();
+
 }

@@ -13,10 +13,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.server.jetty;
+package de.csenk.gwtws.client;
 
-import org.eclipse.jetty.websocket.WebSocket;
-
+import de.csenk.gwtws.client.js.JavaScriptWebSocket;
 import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.FilterChain;
 import de.csenk.gwtws.shared.Handler;
@@ -25,58 +24,29 @@ import de.csenk.gwtws.shared.filter.FilterChainImpl;
 
 /**
  * @author senk.christian@googlemail.com
- * @date 25.08.2010
- * @time 13:56:30
+ * @date 26.08.2010
+ * @time 13:44:45
  *
  */
-public class JettyWebSocket implements WebSocket, Connection {
+public class JavaScriptWebSocketConnection implements Connection {
 
 	private final Handler handler;
-	
-	private Outbound outbound;
-	private Sender sender;
+	private final WebSocket webSocket;
+	private final Sender webSocketSender;
 	
 	private final FilterChain filterChain;
 	
 	/**
+	 * @param url
 	 * @param handler
 	 */
-	public JettyWebSocket(final Handler handler) {
+	public JavaScriptWebSocketConnection(final String url, final Handler handler) {
+		//TODO gwtws: Find a way to make this class more testable
 		this.handler = handler;
+		this.webSocket = createWebSocket(url);
+		
+		this.webSocketSender = new WebSocketSender(webSocket);
 		this.filterChain = new FilterChainImpl(this);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jetty.websocket.WebSocket#onConnect(org.eclipse.jetty.websocket.WebSocket.Outbound)
-	 */
-	@Override
-	public void onConnect(Outbound arg0) {
-		sender = new OutboundSender(arg0);
-		filterChain.fireConnectionOpened();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jetty.websocket.WebSocket#onDisconnect()
-	 */
-	@Override
-	public void onDisconnect() {
-		filterChain.fireConnectionClosed();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jetty.websocket.WebSocket#onMessage(byte, java.lang.String)
-	 */
-	@Override
-	public void onMessage(byte arg0, String arg1) {
-		filterChain.fireMessageReceived(arg1);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jetty.websocket.WebSocket#onMessage(byte, byte[], int, int)
-	 */
-	@Override
-	public void onMessage(byte arg0, byte[] arg1, int arg2, int arg3) {
-		filterChain.fireMessageReceived(new String(arg1, arg2, arg3));
 	}
 
 	/* (non-Javadoc)
@@ -84,7 +54,7 @@ public class JettyWebSocket implements WebSocket, Connection {
 	 */
 	@Override
 	public void close() {
-		outbound.disconnect();
+		webSocket.close();
 	}
 
 	/* (non-Javadoc)
@@ -108,7 +78,7 @@ public class JettyWebSocket implements WebSocket, Connection {
 	 */
 	@Override
 	public Sender getSender() {
-		return sender;
+		return webSocketSender;
 	}
 
 	/* (non-Javadoc)
@@ -119,4 +89,34 @@ public class JettyWebSocket implements WebSocket, Connection {
 		filterChain.fireSend(message);
 	}
 		
+	/**
+	 * @param url
+	 * @return
+	 */
+	private WebSocket createWebSocket(String url) {
+		return new JavaScriptWebSocket(url, new WebSocketCallback() {
+			
+			@Override
+			public void onOpen(WebSocket webSocket) {
+				filterChain.fireConnectionOpened();
+			}
+			
+			@Override
+			public void onMessage(WebSocket webSocket, String message) {
+				filterChain.fireMessageReceived(message);
+			}
+			
+			@Override
+			public void onError(WebSocket webSocket) {
+				filterChain.fireExceptionCaught(new IllegalStateException("JavaScript implementation of WebSocket thrown an unknown exception."));
+			}
+			
+			@Override
+			public void onClose(WebSocket webSocket) {
+				filterChain.fireConnectionClosed();
+			}
+			
+		});
+	}
+	
 }

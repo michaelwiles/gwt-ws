@@ -31,7 +31,7 @@ import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
  * @time 19:05:44
  * 
  */
-public class ClientGWTSerializer implements GWTSerializer {
+public abstract class ClientGWTSerializer implements GWTSerializer {
 
 	private final String moduleBaseURL;
 	private final Serializer serializer;

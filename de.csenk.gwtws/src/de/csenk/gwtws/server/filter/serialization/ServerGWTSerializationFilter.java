@@ -42,7 +42,7 @@ public class ServerGWTSerializationFilter extends ClientGWTSerializationFilter {
 	 */
 	@Override
 	public void onMessageReceived(NextFilter nextFilter, Connection connection,
-			Object message) throws Exception {
+			Object message) throws Throwable {
 		assert message instanceof String;
 		
 		Object deserializedObject = null;
@@ -62,7 +62,7 @@ public class ServerGWTSerializationFilter extends ClientGWTSerializationFilter {
 	 */
 	@Override
 	public void onConnectionOpened(NextFilter nextFilter, Connection connection)
-			throws Exception {
+			throws Throwable {
 		contextClassLoader = Thread.currentThread().getContextClassLoader();
 		
 		super.onConnectionOpened(nextFilter, connection);

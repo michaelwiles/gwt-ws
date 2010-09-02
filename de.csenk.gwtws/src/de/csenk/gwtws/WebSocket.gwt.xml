@@ -8,7 +8,6 @@
 			class="de.csenk.gwtws.shared.filter.serialization.GWTSerializer" />
 	</generate-with>
 
-
 	<!-- Specify the paths for translatable code                    -->
 	<source path='client' />
 	<source path='shared' />

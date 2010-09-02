@@ -33,7 +33,7 @@ public class ClientLoggingFilter extends FilterImpl {
 	 */
 	@Override
 	public void onMessageReceived(NextFilter nextFilter, Connection connection,
-			Object message) throws Exception {
+			Object message) throws Throwable {
 		Log.info(message.toString());
 		
 		super.onMessageReceived(nextFilter, connection, message);
@@ -44,7 +44,7 @@ public class ClientLoggingFilter extends FilterImpl {
 	 */
 	@Override
 	public void onSend(NextFilter nextFilter, Connection connection,
-			Object message) throws Exception {
+			Object message) throws Throwable {
 		Log.info(message.toString());
 		
 		super.onSend(nextFilter, connection, message);

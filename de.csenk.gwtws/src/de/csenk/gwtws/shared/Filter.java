@@ -27,13 +27,13 @@ public interface Filter {
 	 * @param connection
 	 */
 	void onConnectionOpened(NextFilter nextFilter, Connection connection)
-			throws Exception;
+			throws Throwable;
 
 	/**
 	 * @param connection
 	 */
 	void onConnectionClosed(NextFilter nextFilter, Connection connection)
-			throws Exception;
+			throws Throwable;
 
 	/**
 	 * @param caught
@@ -45,7 +45,7 @@ public interface Filter {
 	 * @param message
 	 */
 	void onMessageReceived(NextFilter nextFilter, Connection connection,
-			Object message) throws Exception;
+			Object message) throws Throwable;
 
 	/**
 	 * @param nextFilter
@@ -54,7 +54,7 @@ public interface Filter {
 	 * @throws Exception
 	 */
 	void onSend(NextFilter nextFilter, Connection connection,
-			Object message) throws Exception;
+			Object message) throws Throwable;
 
 	/**
 	 * @author senk.christian@googlemail.com
@@ -67,12 +67,12 @@ public interface Filter {
 		/**
 		 * @param connection
 		 */
-		void onConnectionOpened(Connection connection) throws Exception;
+		void onConnectionOpened(Connection connection) throws Throwable;
 
 		/**
 		 * @param connection
 		 */
-		void onConnectionClosed(Connection connection) throws Exception;
+		void onConnectionClosed(Connection connection) throws Throwable;
 
 		/**
 		 * @param caught
@@ -84,7 +84,7 @@ public interface Filter {
 		 * @param message
 		 */
 		void onMessageReceived(Connection connection, Object message)
-				throws Exception;
+				throws Throwable;
 
 		/**
 		 * @param connection
@@ -92,7 +92,7 @@ public interface Filter {
 		 * @throws Exception
 		 */
 		void onSend(Connection connection, Object message)
-				throws Exception;
+				throws Throwable;
 
 	}
 

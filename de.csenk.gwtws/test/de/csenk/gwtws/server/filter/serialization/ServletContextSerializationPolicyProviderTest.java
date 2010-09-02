@@ -13,32 +13,23 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.client;
+package de.csenk.gwtws.server.filter.serialization;
 
-import java.io.IOException;
-
-import de.csenk.gwtws.shared.Sender;
+import junit.framework.TestCase;
 
 /**
  * @author senk.christian@googlemail.com
- * @date 31.08.2010
- * @time 15:38:55
+ * @date 02.09.2010
+ * @time 15:21:16
  *
  */
-public class WebSocketSender implements Sender {
+public class ServletContextSerializationPolicyProviderTest extends TestCase {
 
-	private final WebSocket webSocket;
-	
-	public WebSocketSender(WebSocket webSocket) {
-		this.webSocket = webSocket;
-	}
-	
-	/* (non-Javadoc)
-	 * @see de.csenk.gwtws.shared.Sender#send(java.lang.String)
+	/**
+	 * Test method for {@link de.csenk.gwtws.server.filter.serialization.ServletContextSerializationPolicyProvider#getSerializationPolicy(java.lang.String, java.lang.String)}.
 	 */
-	@Override
-	public void send(String message) throws IOException {
-		webSocket.send(message);
+	public final void testGetSerializationPolicy() {
+		fail("Not yet implemented"); // TODO
 	}
 
 }

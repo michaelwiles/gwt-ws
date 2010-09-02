@@ -34,14 +34,14 @@ public class StatisticsFilter extends FilterImpl {
 	 */
 	@Override
 	public void onMessageReceived(NextFilter nextFilter, Connection connection,
-			Object message) throws Exception {
+			Object message) throws Throwable {
 		assert message instanceof String;
 		
 		String strMsg = (String) message;
 		int byteCount = strMsg.getBytes().length;
 		receivedByteCount += byteCount;
 		
-		//TODO Use a logging facade
+		//TODO gwtws: Use a logging facade
 		System.out.println("Received " + byteCount + " bytes and " + receivedByteCount + " in total");
 		nextFilter.onMessageReceived(connection, message);
 	}
@@ -51,14 +51,14 @@ public class StatisticsFilter extends FilterImpl {
 	 */
 	@Override
 	public void onSend(NextFilter nextFilter, Connection connection,
-			Object message) throws Exception {
+			Object message) throws Throwable {
 		assert message instanceof String;
 		
 		String strMsg = (String) message;
 		int byteCount = strMsg.getBytes().length;
 		sentByteCount += byteCount;
 		
-		//TODO Use a logging facade
+		//TODO gwtws: Use a logging facade
 		System.out.println("Sent " + byteCount + " bytes and " + sentByteCount + " in total");
 		nextFilter.onSend(connection, message);
 	}

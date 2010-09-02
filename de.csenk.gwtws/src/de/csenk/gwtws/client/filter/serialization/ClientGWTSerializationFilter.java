@@ -38,7 +38,7 @@ public class ClientGWTSerializationFilter extends FilterImpl {
 	 */
 	@Override
 	public void onMessageReceived(NextFilter nextFilter, Connection connection,
-			Object message) throws Exception {
+			Object message) throws Throwable {
 		assert message instanceof String;
 		
 		Object deserializedMessage = serializer.deserialize((String) message);
@@ -50,7 +50,7 @@ public class ClientGWTSerializationFilter extends FilterImpl {
 	 */
 	@Override
 	public void onSend(NextFilter nextFilter, Connection connection,
-			Object message) throws Exception {
+			Object message) throws Throwable {
 		Object serializedMessage = serializer.serialize(message);
 		nextFilter.onSend(connection, serializedMessage);
 	}

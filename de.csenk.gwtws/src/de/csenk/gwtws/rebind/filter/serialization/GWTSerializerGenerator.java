@@ -131,7 +131,7 @@ public class GWTSerializerGenerator extends Generator {
 		if (sourceWriter == null)
 			return getImplementationQualifiedName(serializerInterface);
 
-		// TODO validate serializerInterface
+		// TODO gwtws: validate serializerInterface
 
 		final PropertyOracle propertyOracle = context.getPropertyOracle();
 
@@ -150,7 +150,7 @@ public class GWTSerializerGenerator extends Generator {
 		addRoots(serializerLogger, typeOracle, typesSentFromBrowserBuilder,
 				typesSentToBrowserBuilder, serializerInterface);
 
-		// TODO Type name ellision?
+		// TODO gwtws: Type name ellision?
 
 		// Create a resource file to receive all of the serialization
 		// information

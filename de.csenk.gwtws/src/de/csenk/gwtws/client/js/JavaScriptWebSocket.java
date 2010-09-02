@@ -17,6 +17,9 @@ package de.csenk.gwtws.client.js;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import de.csenk.gwtws.client.WebSocket;
+import de.csenk.gwtws.client.WebSocketCallback;
+
 /**
  * @author senk.christian@googlemail.com
  * @date 25.08.2010
@@ -25,7 +28,7 @@ import com.google.gwt.core.client.JavaScriptObject;
  * Represents the GWT version of the JavaScripts new WebSocket component.
  */
 @SuppressWarnings("unused")
-public class WebSocket {
+public class JavaScriptWebSocket implements WebSocket {
 	
 	/**
 	 * @return <code>True</code> if the WebSocket component is supported by the current browser
@@ -42,12 +45,12 @@ public class WebSocket {
 	private final WebSocketCallback socketCallback;
 	
 	/**
-	 * Creates a new {@link WebSocket} that connects immediately to the end-point URL.
+	 * Creates a new {@link JavaScriptWebSocket} that connects immediately to the end-point URL.
 	 * 
 	 * @param url
 	 * @param socketCallback
 	 */
-	public WebSocket(final String url, final WebSocketCallback socketCallback) {
+	public JavaScriptWebSocket(final String url, final WebSocketCallback socketCallback) {
 		assert url != null;
 		assert socketCallback != null;
 		assert IsSupported();
@@ -56,44 +59,47 @@ public class WebSocket {
 		this.jsWebSocket = createJSWebSocket(url, this);
 	}
 	
-	/**
-	 * Sends a message.
-	 * 
-	 * @param message
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.client.js.WebSocket#send(java.lang.String)
 	 */
+	@Override
 	public native void send(String message) /*-{
 		if (message == null)
 			return;
 		
-		this.@de.csenk.gwtws.client.js.WebSocket::jsWebSocket.send(message);
+		this.@de.csenk.gwtws.client.js.JavaScriptWebSocket::jsWebSocket.send(message);
 	}-*/;
 	
-	/**
-	 * Closes this {@link WebSocket}.
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.client.js.WebSocket#close()
 	 */
+	@Override
 	public native void close() /*-{
-		this.@de.csenk.gwtws.client.js.WebSocket::jsWebSocket.close();
+		this.@de.csenk.gwtws.client.js.JavaScriptWebSocket::jsWebSocket.close();
 	}-*/;
 	
-	/**
-	 * @return the bufferedAmount property of the underlying JavaScript WebSocket.
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.client.js.WebSocket#getBufferedAmount()
 	 */
+	@Override
 	public native int getBufferedAmount() /*-{
-		return this.@de.csenk.gwtws.client.js.WebSocket::jsWebSocket.bufferedAmount;
+		return this.@de.csenk.gwtws.client.js.JavaScriptWebSocket::jsWebSocket.bufferedAmount;
 	}-*/;
 	
-	/**
-	 * @return the readyState property of the underlying JavaScript WebSocket.
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.client.js.WebSocket#getReadyState()
 	 */
+	@Override
 	public native int getReadyState() /*-{
-		return this.@de.csenk.gwtws.client.js.WebSocket::jsWebSocket.readyState;
+		return this.@de.csenk.gwtws.client.js.JavaScriptWebSocket::jsWebSocket.readyState;
 	}-*/;
 	
-	/**
-	 * @return the url property of the underlying JavaScript WebSocket.
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.client.js.WebSocket#getURL()
 	 */
+	@Override
 	public native String getURL() /*-{
-		return this.@de.csenk.gwtws.client.js.WebSocket::jsWebSocket.url;
+		return this.@de.csenk.gwtws.client.js.JavaScriptWebSocket::jsWebSocket.url;
 	}-*/;
 	
 	/**
@@ -105,20 +111,20 @@ public class WebSocket {
 		var jsWebSocket = new WebSocket(url);
 		
 		jsWebSocket.onopen = function() {
-			webSocket.@de.csenk.gwtws.client.js.WebSocket::onOpen()();
+			webSocket.@de.csenk.gwtws.client.js.JavaScriptWebSocket::onOpen()();
 		}
 		
 		jsWebSocket.onclose = function() {
-			webSocket.@de.csenk.gwtws.client.js.WebSocket::onClose()();
+			webSocket.@de.csenk.gwtws.client.js.JavaScriptWebSocket::onClose()();
 		}
 		
 		jsWebSocket.onerror = function() {
-			webSocket.@de.csenk.gwtws.client.js.WebSocket::onError()();
+			webSocket.@de.csenk.gwtws.client.js.JavaScriptWebSocket::onError()();
 		}
 		
 		jsWebSocket.onmessage = function(socketResponse) {
 			if (socketResponse.data) {
-				webSocket.@de.csenk.gwtws.client.js.WebSocket::onMessage(Ljava/lang/String;)(socketResponse.data);
+				webSocket.@de.csenk.gwtws.client.js.JavaScriptWebSocket::onMessage(Ljava/lang/String;)(socketResponse.data);
 			}
 		}
 		

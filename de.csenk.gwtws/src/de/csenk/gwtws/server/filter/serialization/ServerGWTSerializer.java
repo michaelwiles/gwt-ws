@@ -16,6 +16,7 @@
 package de.csenk.gwtws.server.filter.serialization;
 
 import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.server.rpc.RPC;
 import com.google.gwt.user.server.rpc.SerializationPolicy;
 import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
 import com.google.gwt.user.server.rpc.impl.ServerSerializationStreamReader;
@@ -76,10 +77,9 @@ public class ServerGWTSerializer implements GWTSerializer {
 	 */
 	@Override
 	public String serialize(Object obj) throws SerializationException {
-		if (serializationPolicy == null)
-			throw new IllegalStateException("SerializationPolicy is unknown for this connection.");
+		SerializationPolicy policy = (serializationPolicy == null) ? RPC.getDefaultSerializationPolicy() : serializationPolicy; 
 		
-		ServerSerializationStreamWriter streamWriter = new ServerSerializationStreamWriter(serializationPolicy);
+		ServerSerializationStreamWriter streamWriter = new ServerSerializationStreamWriter(policy);
 		streamWriter.prepareToWrite();
 		
 		streamWriter.writeString(obj.getClass().getName());

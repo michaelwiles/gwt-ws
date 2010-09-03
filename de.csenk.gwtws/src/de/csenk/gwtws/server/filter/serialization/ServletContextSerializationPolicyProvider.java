@@ -26,6 +26,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 
 import com.google.gwt.user.server.rpc.RPC;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.user.server.rpc.SerializationPolicy;
 import com.google.gwt.user.server.rpc.SerializationPolicyLoader;
 import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
@@ -35,6 +36,7 @@ import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
  * @date 01.09.2010
  * @time 21:24:40
  * 
+ * Most of this code is copied from {@link RemoteServiceServlet}.
  */
 public class ServletContextSerializationPolicyProvider implements
 		SerializationPolicyProvider {

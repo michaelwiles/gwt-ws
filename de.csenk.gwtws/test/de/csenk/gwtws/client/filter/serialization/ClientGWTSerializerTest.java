@@ -31,9 +31,17 @@ public class ClientGWTSerializerTest extends GWTTestCase {
 
 	/**
 	 * Test method for {@link de.csenk.gwtws.client.filter.serialization.ClientGWTSerializer#deserialize(java.lang.String)}.
+	 * @throws SerializationException 
 	 */
-	public final void testDeserialize() {
-		//fail("Not yet implemented"); // TODO
+	public final void testDeserialize() throws SerializationException {
+		//Will create a deferred binding deriving from ClientGWTSerializer
+		final GWTSerializer serializer = GWT.create(GWTSerializer.class);
+		
+		final String serializedContent = "[1337,2,1,[\"java.lang.Integer\",\"java.lang.Integer/3438268394\"],0,5]";
+		Object obj = serializer.deserialize(serializedContent);
+		
+		assertTrue(obj instanceof Integer);
+		assertEquals(new Integer(1337), obj);
 	}
 
 	/**
@@ -42,10 +50,9 @@ public class ClientGWTSerializerTest extends GWTTestCase {
 	 */
 	public final void testSerialize() throws SerializationException {
 		//Will create a deferred binding deriving from ClientGWTSerializer
-		GWTSerializer serializer = GWT.create(GWTSerializer.class);
+		final GWTSerializer serializer = GWT.create(GWTSerializer.class);
 		
-		String serializedInteger = serializer.serialize(new Integer(1337));
-		GWT.log(serializedInteger);
+		final String serializedInteger = serializer.serialize(new Integer(1337));
 		assertTrue(serializedInteger.contains("java.lang.Integer"));
 	}
 

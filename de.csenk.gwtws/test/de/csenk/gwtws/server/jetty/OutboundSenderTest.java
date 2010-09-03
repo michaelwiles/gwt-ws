@@ -15,7 +15,13 @@
 
 package de.csenk.gwtws.server.jetty;
 
+import java.io.IOException;
+
 import junit.framework.TestCase;
+
+import org.eclipse.jetty.websocket.WebSocket.Outbound;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
 
 /**
  * @author senk.christian@googlemail.com
@@ -25,11 +31,24 @@ import junit.framework.TestCase;
  */
 public class OutboundSenderTest extends TestCase {
 
+	private final Mockery mockContext = new Mockery();
+	
 	/**
 	 * Test method for {@link de.csenk.gwtws.server.jetty.OutboundSender#send(java.lang.String)}.
+	 * @throws IOException 
 	 */
-	public final void testSend() {
-		fail("Not yet implemented"); // TODO
+	public final void testSend() throws IOException {
+		final String message = "Hello World!";
+		
+		final Outbound mockOutbound = mockContext.mock(Outbound.class);
+		final OutboundSender outboundSender = new OutboundSender(mockOutbound);
+		
+		mockContext.checking(new Expectations(){{
+			oneOf(mockOutbound).sendMessage(message);
+		}});
+		
+		outboundSender.send(message);
+		mockContext.assertIsSatisfied();
 	}
 
 }

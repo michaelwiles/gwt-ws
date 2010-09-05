@@ -17,6 +17,13 @@ package de.csenk.gwtws.shared.filter;
 
 import junit.framework.TestCase;
 
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+
+import de.csenk.gwtws.shared.Connection;
+import de.csenk.gwtws.shared.Filter;
+import de.csenk.gwtws.shared.Filter.NextFilter;
+
 /**
  * @author senk.christian@googlemail.com
  * @date 02.09.2010
@@ -25,53 +32,106 @@ import junit.framework.TestCase;
  */
 public class FilterImplTest extends TestCase {
 
-	/* (non-Javadoc)
+	private Mockery mockContext;
+
+	private Connection mockConnection;
+	private NextFilter mockNextFilter;
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see junit.framework.TestCase#setUp()
 	 */
 	protected void setUp() throws Exception {
-		super.setUp();
+		mockContext = new Mockery();
+
+		mockConnection = mockContext.mock(Connection.class);
+		mockNextFilter = mockContext.mock(NextFilter.class);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see junit.framework.TestCase#tearDown()
 	 */
 	protected void tearDown() throws Exception {
-		super.tearDown();
+		mockConnection = null;
+		mockNextFilter = null;
+
+		mockContext = null;
 	}
 
 	/**
 	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterImpl#onConnectionClosed(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection)}.
+	 * @throws Throwable 
 	 */
-	public final void testOnConnectionClosed() {
-		fail("Not yet implemented"); // TODO
+	public final void testOnConnectionClosed() throws Throwable {
+		final Filter filter = new FilterImpl();
+		
+		mockContext.checking(new Expectations() {{
+			oneOf(mockNextFilter).onConnectionClosed(mockConnection);
+		}});
+		
+		filter.onConnectionClosed(mockNextFilter, mockConnection);
 	}
 
 	/**
 	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterImpl#onConnectionOpened(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection)}.
 	 */
-	public final void testOnConnectionOpened() {
-		fail("Not yet implemented"); // TODO
+	public final void testOnConnectionOpened() throws Throwable {
+		final Filter filter = new FilterImpl();
+		
+		mockContext.checking(new Expectations() {{
+			oneOf(mockNextFilter).onConnectionOpened(mockConnection);
+		}});
+		
+		filter.onConnectionOpened(mockNextFilter, mockConnection);
 	}
 
 	/**
 	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterImpl#onExceptionCaught(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Throwable)}.
 	 */
-	public final void testOnExceptionCaught() {
-		fail("Not yet implemented"); // TODO
+	public final void testOnExceptionCaught() throws Throwable {
+		final Filter filter = new FilterImpl();
+		
+		final Throwable THROWABLE = new Exception();
+		
+		mockContext.checking(new Expectations() {{
+			oneOf(mockNextFilter).onExceptionCaught(mockConnection, THROWABLE);
+		}});
+		
+		filter.onExceptionCaught(mockNextFilter, mockConnection, THROWABLE);
 	}
 
 	/**
 	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterImpl#onMessageReceived(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)}.
+	 * @throws Throwable 
 	 */
-	public final void testOnMessageReceived() {
-		fail("Not yet implemented"); // TODO
+	public final void testOnMessageReceived() throws Throwable {
+		final Filter filter = new FilterImpl();
+		
+		final String MESSAGE = "Hello World!";
+		
+		mockContext.checking(new Expectations() {{
+			oneOf(mockNextFilter).onMessageReceived(mockConnection, MESSAGE);
+		}});
+		
+		filter.onMessageReceived(mockNextFilter, mockConnection, MESSAGE);
 	}
 
 	/**
 	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterImpl#onSend(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)}.
 	 */
-	public final void testOnSend() {
-		fail("Not yet implemented"); // TODO
+	public final void testOnSend() throws Throwable {
+		final Filter filter = new FilterImpl();
+		
+		final String MESSAGE = "Hello World!";
+		
+		mockContext.checking(new Expectations() {{
+			oneOf(mockNextFilter).onSend(mockConnection, MESSAGE);
+		}});
+		
+		filter.onSend(mockNextFilter, mockConnection, MESSAGE);
 	}
 
 }

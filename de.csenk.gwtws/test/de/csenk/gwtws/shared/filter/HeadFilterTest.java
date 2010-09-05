@@ -17,6 +17,13 @@ package de.csenk.gwtws.shared.filter;
 
 import junit.framework.TestCase;
 
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+
+import de.csenk.gwtws.shared.Connection;
+import de.csenk.gwtws.shared.Filter;
+import de.csenk.gwtws.shared.Sender;
+
 /**
  * @author senk.christian@googlemail.com
  * @date 02.09.2010
@@ -25,11 +32,54 @@ import junit.framework.TestCase;
  */
 public class HeadFilterTest extends TestCase {
 
+	private Mockery mockContext;
+
+	private Connection mockConnection;
+	private Sender mockSender;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see junit.framework.TestCase#setUp()
+	 */
+	protected void setUp() throws Exception {
+		mockContext = new Mockery();
+
+		mockConnection = mockContext.mock(Connection.class);
+		mockSender = mockContext.mock(Sender.class);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see junit.framework.TestCase#tearDown()
+	 */
+	protected void tearDown() throws Exception {
+		mockConnection = null;
+		mockSender = null;
+
+		mockContext = null;
+	}
+	
 	/**
 	 * Test method for {@link de.csenk.gwtws.shared.filter.HeadFilter#onSend(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)}.
+	 * @throws Throwable 
 	 */
-	public final void testOnSend() {
-		fail("Not yet implemented"); // TODO
+	public final void testOnSend() throws Throwable {
+		final Filter headFilter = new HeadFilter();
+		
+		final String MESSAGE = "Hello World!";
+		
+		mockContext.checking(new Expectations() {{
+			oneOf(mockConnection).getSender();
+				will(returnValue(mockSender));
+				
+			oneOf(mockSender).send(MESSAGE);
+		}});
+		
+		headFilter.onSend(null, mockConnection, MESSAGE);
+		
+		mockContext.assertIsSatisfied();
 	}
 
 }

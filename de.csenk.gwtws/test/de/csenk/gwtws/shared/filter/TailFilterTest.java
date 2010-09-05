@@ -17,6 +17,13 @@ package de.csenk.gwtws.shared.filter;
 
 import junit.framework.TestCase;
 
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+
+import de.csenk.gwtws.shared.Connection;
+import de.csenk.gwtws.shared.Filter;
+import de.csenk.gwtws.shared.Handler;
+
 /**
  * @author senk.christian@googlemail.com
  * @date 02.09.2010
@@ -25,32 +32,110 @@ import junit.framework.TestCase;
  */
 public class TailFilterTest extends TestCase {
 
+	private Mockery mockContext;
+
+	private Connection mockConnection;
+	private Handler mockHandler;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see junit.framework.TestCase#setUp()
+	 */
+	protected void setUp() throws Exception {
+		mockContext = new Mockery();
+
+		mockConnection = mockContext.mock(Connection.class);
+		mockHandler = mockContext.mock(Handler.class);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see junit.framework.TestCase#tearDown()
+	 */
+	protected void tearDown() throws Exception {
+		mockConnection = null;
+		mockHandler = null;
+
+		mockContext = null;
+	}
+	
 	/**
 	 * Test method for {@link de.csenk.gwtws.shared.filter.TailFilter#onConnectionClosed(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection)}.
 	 */
-	public final void testOnConnectionClosed() {
-		fail("Not yet implemented"); // TODO
+	public final void testOnConnectionClosed() throws Throwable {
+		final Filter tailFilter = new TailFilter();
+		
+		mockContext.checking(new Expectations() {{
+			oneOf(mockConnection).getHandler();
+				will(returnValue(mockHandler));
+				
+			oneOf(mockHandler).onConnectionClosed(mockConnection);
+		}});
+		
+		tailFilter.onConnectionClosed(null, mockConnection);
+		
+		mockContext.assertIsSatisfied();
 	}
 
 	/**
 	 * Test method for {@link de.csenk.gwtws.shared.filter.TailFilter#onConnectionOpened(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection)}.
 	 */
-	public final void testOnConnectionOpened() {
-		fail("Not yet implemented"); // TODO
+	public final void testOnConnectionOpened() throws Throwable {
+		final Filter tailFilter = new TailFilter();
+		
+		mockContext.checking(new Expectations() {{
+			oneOf(mockConnection).getHandler();
+				will(returnValue(mockHandler));
+				
+			oneOf(mockHandler).onConnectionOpened(mockConnection);
+		}});
+		
+		tailFilter.onConnectionOpened(null, mockConnection);
+		
+		mockContext.assertIsSatisfied();
 	}
 
 	/**
 	 * Test method for {@link de.csenk.gwtws.shared.filter.TailFilter#onExceptionCaught(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Throwable)}.
 	 */
-	public final void testOnExceptionCaught() {
-		fail("Not yet implemented"); // TODO
+	public final void testOnExceptionCaught() throws Throwable {
+		final Filter tailFilter = new TailFilter();
+		
+		final Throwable THROWABLE = new Exception();
+		
+		mockContext.checking(new Expectations() {{
+			oneOf(mockConnection).getHandler();
+				will(returnValue(mockHandler));
+				
+			oneOf(mockHandler).onExceptionCaught(mockConnection, THROWABLE);
+		}});
+		
+		tailFilter.onExceptionCaught(null, mockConnection, THROWABLE);
+		
+		mockContext.assertIsSatisfied();
 	}
 
 	/**
 	 * Test method for {@link de.csenk.gwtws.shared.filter.TailFilter#onMessageReceived(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)}.
+	 * @throws Throwable 
 	 */
-	public final void testOnMessageReceived() {
-		fail("Not yet implemented"); // TODO
+	public final void testOnMessageReceived() throws Throwable {
+		final Filter tailFilter = new TailFilter();
+		
+		final String MESSAGE = "Hello World!";
+		
+		mockContext.checking(new Expectations() {{
+			oneOf(mockConnection).getHandler();
+				will(returnValue(mockHandler));
+				
+			oneOf(mockHandler).onMessageReceived(mockConnection, MESSAGE);
+		}});
+		
+		tailFilter.onMessageReceived(null, mockConnection, MESSAGE);
+		
+		mockContext.assertIsSatisfied();
 	}
 
 }

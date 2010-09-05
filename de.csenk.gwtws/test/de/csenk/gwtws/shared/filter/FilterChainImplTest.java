@@ -17,54 +17,208 @@ package de.csenk.gwtws.shared.filter;
 
 import junit.framework.TestCase;
 
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.Sequence;
+import org.jmock.api.Invocation;
+import org.jmock.lib.action.CustomAction;
+
+import de.csenk.gwtws.shared.Connection;
+import de.csenk.gwtws.shared.Filter;
+import de.csenk.gwtws.shared.FilterChain;
+import de.csenk.gwtws.shared.Filter.NextFilter;
+
 /**
  * @author senk.christian@googlemail.com
  * @date 02.09.2010
  * @time 15:25:33
- *
+ * 
  */
 public class FilterChainImplTest extends TestCase {
 
-	/**
-	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterChainImpl#addLast(java.lang.String, de.csenk.gwtws.shared.Filter)}.
+	private Mockery mockContext;
+
+	private Connection mockConnection;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see junit.framework.TestCase#setUp()
 	 */
-	public final void testAddLast() {
-		fail("Not yet implemented"); // TODO
+	protected void setUp() throws Exception {
+		mockContext = new Mockery();
+
+		mockConnection = mockContext.mock(Connection.class);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see junit.framework.TestCase#tearDown()
+	 */
+	protected void tearDown() throws Exception {
+		mockConnection = null;
+
+		mockContext = null;
 	}
 
 	/**
-	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireSend(java.lang.Object)}.
+	 * Test method for
+	 * {@link de.csenk.gwtws.shared.filter.FilterChainImpl#addLast(java.lang.String, de.csenk.gwtws.shared.Filter)}
+	 * .
+	 * @throws Throwable 
 	 */
-	public final void testFireSend() {
-		fail("Not yet implemented"); // TODO
+	public final void testAddLast() throws Throwable {
+		final Filter filter1 = mockContext.mock(Filter.class, "filter1");
+		final Filter filter2 = mockContext.mock(Filter.class, "filter2");
+		final FilterChain filterChain = new FilterChainImpl(mockConnection);
+
+		final String MESSAGE = "Hello World!";
+		final String FILTER_SEQUENCE = "filterSequence";
+		final Sequence filterSequence = mockContext.sequence(FILTER_SEQUENCE);
+
+		mockContext.checking(new Expectations() {
+			{
+				oneOf(filter1).onMessageReceived(with(any(NextFilter.class)),
+						with(mockConnection), with(MESSAGE));
+					inSequence(filterSequence);
+					will(new CustomAction("NextFilterAction") {
+
+						@Override
+						public Object invoke(Invocation invocation)
+								throws Throwable {
+							NextFilter nextFilter = (NextFilter) invocation.getParameter(0);
+							nextFilter.onMessageReceived((Connection) invocation.getParameter(1), invocation.getParameter(2));
+							return null;
+						}
+						
+					});
+				oneOf(filter2).onMessageReceived(with(any(NextFilter.class)),
+						with(mockConnection), with(MESSAGE));
+					inSequence(filterSequence);
+			}
+		});
+		
+		filterChain.addLast("filter1", filter1);
+		filterChain.addLast("filter2", filter2);
+		filterChain.fireMessageReceived(MESSAGE);
+		
+		mockContext.assertIsSatisfied();
 	}
 
 	/**
-	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireExceptionCaught(java.lang.Throwable)}.
+	 * Test method for
+	 * {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireSend(java.lang.Object)}
+	 * .
+	 * @throws Throwable 
+	 */
+	public final void testFireSend() throws Throwable {
+		final Filter filter = mockContext.mock(Filter.class, "filter");
+		final FilterChain filterChain = new FilterChainImpl(mockConnection);
+
+		final String MESSAGE = "Hello World!";
+
+		mockContext.checking(new Expectations() {
+			{
+				oneOf(filter).onSend(with(any(NextFilter.class)), with(mockConnection), with(MESSAGE));
+			}
+		});
+		
+		filterChain.addLast("filter", filter);
+		filterChain.fireSend(MESSAGE);
+		
+		mockContext.assertIsSatisfied();
+	}
+
+	/**
+	 * Test method for
+	 * {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireExceptionCaught(java.lang.Throwable)}
+	 * .
 	 */
 	public final void testFireExceptionCaught() {
-		fail("Not yet implemented"); // TODO
+		final Filter filter = mockContext.mock(Filter.class, "filter");
+		final FilterChain filterChain = new FilterChainImpl(mockConnection);
+
+		final Throwable THROWABLE = new Exception();
+		
+		mockContext.checking(new Expectations() {
+			{
+				oneOf(filter).onExceptionCaught(with(any(NextFilter.class)), with(mockConnection), with(THROWABLE));
+			}
+		});
+		
+		filterChain.addLast("filter", filter);
+		filterChain.fireExceptionCaught(THROWABLE);
+		
+		mockContext.assertIsSatisfied();
 	}
 
 	/**
-	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireConnectionClosed()}.
+	 * Test method for
+	 * {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireConnectionClosed()}
+	 * .
+	 * @throws Throwable 
 	 */
-	public final void testFireConnectionClosed() {
-		fail("Not yet implemented"); // TODO
+	public final void testFireConnectionClosed() throws Throwable {
+		final Filter filter = mockContext.mock(Filter.class, "filter");
+		final FilterChain filterChain = new FilterChainImpl(mockConnection);
+
+		mockContext.checking(new Expectations() {
+			{
+				oneOf(filter).onConnectionClosed(with(any(NextFilter.class)), with(mockConnection));
+			}
+		});
+		
+		filterChain.addLast("filter", filter);
+		filterChain.fireConnectionClosed();
+		
+		mockContext.assertIsSatisfied();
 	}
 
 	/**
-	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireConnectionOpened()}.
+	 * Test method for
+	 * {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireConnectionOpened()}
+	 * .
+	 * @throws Throwable 
 	 */
-	public final void testFireConnectionOpened() {
-		fail("Not yet implemented"); // TODO
+	public final void testFireConnectionOpened() throws Throwable {
+		final Filter filter = mockContext.mock(Filter.class, "filter");
+		final FilterChain filterChain = new FilterChainImpl(mockConnection);
+
+		mockContext.checking(new Expectations() {
+			{
+				oneOf(filter).onConnectionOpened(with(any(NextFilter.class)), with(mockConnection));
+			}
+		});
+		
+		filterChain.addLast("filter", filter);
+		filterChain.fireConnectionOpened();
+		
+		mockContext.assertIsSatisfied();
 	}
 
 	/**
-	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireMessageReceived(java.lang.Object)}.
+	 * Test method for
+	 * {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireMessageReceived(java.lang.Object)}
+	 * .
+	 * @throws Throwable 
 	 */
-	public final void testFireMessageReceived() {
-		fail("Not yet implemented"); // TODO
-	}
+	public final void testFireMessageReceived() throws Throwable {
+		final Filter filter = mockContext.mock(Filter.class, "filter");
+		final FilterChain filterChain = new FilterChainImpl(mockConnection);
 
+		final String MESSAGE = "Hello World!";
+
+		mockContext.checking(new Expectations() {
+			{
+				oneOf(filter).onMessageReceived(with(any(NextFilter.class)), with(mockConnection), with(MESSAGE));
+			}
+		});
+		
+		filterChain.addLast("filter", filter);
+		filterChain.fireMessageReceived(MESSAGE);
+		
+		mockContext.assertIsSatisfied();
+	}
+	
 }

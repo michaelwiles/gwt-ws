@@ -22,12 +22,15 @@ import org.eclipse.jetty.websocket.WebSocketServlet;
 
 import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
 
+import de.csenk.gwtws.demo.shared.Ping;
 import de.csenk.gwtws.server.filter.StatisticsFilter;
 import de.csenk.gwtws.server.filter.serialization.ServerGWTSerializationFilter;
 import de.csenk.gwtws.server.filter.serialization.ServletContextSerializationPolicyProvider;
+import de.csenk.gwtws.server.handler.ServerMessageDispatchingHandler;
 import de.csenk.gwtws.server.jetty.JettyWebSocketConnection;
 import de.csenk.gwtws.shared.Filter;
 import de.csenk.gwtws.shared.FilterChain;
+import de.csenk.gwtws.shared.MessageDispatchingHandler;
 
 /**
  * @author senk.christian@googlemail.com
@@ -44,7 +47,10 @@ public class WebSocketServletImpl extends WebSocketServlet {
 	 */
 	@Override
 	protected WebSocket doWebSocketConnect(HttpServletRequest arg0, String arg1) {
-		JettyWebSocketConnection webSocketConnection = new JettyWebSocketConnection(new WebSocketServerHandler());
+		MessageDispatchingHandler handler = new ServerMessageDispatchingHandler();
+		handler.addReceivedMessageHandler(Ping.class, new PingHandler());
+		
+		JettyWebSocketConnection webSocketConnection = new JettyWebSocketConnection(handler);
 		buildFilterChain(webSocketConnection.getFilterChain());
 		
 		return webSocketConnection;

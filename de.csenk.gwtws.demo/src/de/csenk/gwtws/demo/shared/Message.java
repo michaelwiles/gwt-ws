@@ -23,6 +23,6 @@ import java.io.Serializable;
  * @time 22:32:08
  *
  */
-public interface Packet extends Serializable {
+public interface Message extends Serializable {
 	
 }

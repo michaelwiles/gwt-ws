@@ -20,9 +20,9 @@ import java.util.Date;
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.Timer;
 
+import de.csenk.gwtws.client.handler.ClientMessageDispatchingHandler;
 import de.csenk.gwtws.demo.shared.Ping;
 import de.csenk.gwtws.shared.Connection;
-import de.csenk.gwtws.shared.Handler;
 
 
 /**
@@ -31,7 +31,7 @@ import de.csenk.gwtws.shared.Handler;
  * @time 15:44:06
  *
  */
-public class WebSocketClientHandler implements Handler {
+public class WebSocketClientHandler extends ClientMessageDispatchingHandler {
 	
 	private Timer pingTimer;
 	
@@ -39,7 +39,7 @@ public class WebSocketClientHandler implements Handler {
 	 * @see de.csenk.websocket.shared.IoHandler#onConnectionClosed(de.csenk.websocket.shared.IoConnection)
 	 */
 	@Override
-	public void onConnectionClosed(Connection connection) {
+	public void onConnectionClosed(Connection connection) throws Throwable {
 		Log.info("Connection closed");
 	}
 
@@ -47,7 +47,7 @@ public class WebSocketClientHandler implements Handler {
 	 * @see de.csenk.websocket.shared.IoHandler#onConnectionOpened(de.csenk.websocket.shared.IoConnection)
 	 */
 	@Override
-	public void onConnectionOpened(final Connection connection) throws Exception {
+	public void onConnectionOpened(final Connection connection) throws Throwable {
 		Log.info("Connection opened");
 		
 		pingTimer = new Timer() {
@@ -59,25 +59,6 @@ public class WebSocketClientHandler implements Handler {
 			
 		};
 		pingTimer.scheduleRepeating(1000);
-	}
-
-	/* (non-Javadoc)
-	 * @see de.csenk.websocket.shared.IoHandler#onExceptionCaught(java.lang.Throwable)
-	 */
-	@Override
-	public void onExceptionCaught(Connection connection, Throwable caught) {
-		Log.error("WebSocketClientHandler.onExceptionCaught", caught);
-	}
-
-	/* (non-Javadoc)
-	 * @see de.csenk.websocket.shared.IoHandler#onMessageReceived(de.csenk.websocket.shared.IoConnection, java.lang.Object)
-	 */
-	@Override
-	public void onMessageReceived(Connection connection, Object message) {
-		Ping pingPacket = (Ping) message;
-		
-		long delay = new Date().getTime() - pingPacket.getTimestamp();
-		Log.info("Actual ping is " + delay + "ms");
 	}
 
 }

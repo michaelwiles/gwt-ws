@@ -23,8 +23,10 @@ import de.csenk.gwtws.client.JavaScriptWebSocketConnection;
 import de.csenk.gwtws.client.filter.ClientLoggingFilter;
 import de.csenk.gwtws.client.filter.serialization.ClientGWTSerializationFilter;
 import de.csenk.gwtws.client.js.JavaScriptWebSocket;
+import de.csenk.gwtws.demo.shared.Ping;
 import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.FilterChain;
+import de.csenk.gwtws.shared.MessageDispatchingHandler;
 import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
 
 /**
@@ -37,8 +39,11 @@ public class De_csenk_gwtws_demo implements EntryPoint {
 		if (!JavaScriptWebSocket.IsSupported())
 			return;
 		
+		MessageDispatchingHandler handler = new WebSocketClientHandler();
+		handler.addReceivedMessageHandler(Ping.class, new PingHandler());
+		
 		String webSocketURL = GWT.getModuleBaseURL().replace("http", "ws") + "webSocket";
-		Connection webSocketClient = new JavaScriptWebSocketConnection(webSocketURL, new WebSocketClientHandler());
+		Connection webSocketClient = new JavaScriptWebSocketConnection(webSocketURL, handler);
 		
 		buildFilterChain(webSocketClient.getFilterChain());
 	}
@@ -47,7 +52,7 @@ public class De_csenk_gwtws_demo implements EntryPoint {
 	 * @param filterChain
 	 */
 	private void buildFilterChain(FilterChain filterChain) {
-		GWTSerializer serializer = GWT.create(PacketSerializer.class);
+		GWTSerializer serializer = GWT.create(MessageSerializer.class);
 		
 		filterChain.addLast("logging", new ClientLoggingFilter());
 		filterChain.addLast("serialization", new ClientGWTSerializationFilter(serializer));

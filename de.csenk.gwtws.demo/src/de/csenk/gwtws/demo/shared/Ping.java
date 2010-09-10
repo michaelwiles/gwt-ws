@@ -22,7 +22,7 @@ package de.csenk.gwtws.demo.shared;
  * 
  */
 @SuppressWarnings("serial")
-public class Ping implements Packet {
+public class Ping implements Message {
 
 	private long timestamp;
 

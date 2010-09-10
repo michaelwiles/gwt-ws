@@ -16,7 +16,7 @@
 package de.csenk.gwtws.client.filter.serialization;
 
 import de.csenk.gwtws.shared.Connection;
-import de.csenk.gwtws.shared.filter.FilterImpl;
+import de.csenk.gwtws.shared.filter.DefaultFilter;
 import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
 
 /**
@@ -25,7 +25,7 @@ import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
  * @time 14:25:40
  *
  */
-public class ClientGWTSerializationFilter extends FilterImpl {
+public class ClientGWTSerializationFilter extends DefaultFilter {
 
 	private final GWTSerializer serializer;
 	

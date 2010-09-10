@@ -42,7 +42,7 @@ public class ServerGWTSerializationFilterTest extends TestCase {
 	 * @throws Throwable 
 	 */
 	public final void testOnMessageReceived() throws Throwable {
-		final String serializedContent = "5|0|3|http://192.168.2.103:62849/de.csenk.gwtws.WebSocket.JUnit/|96917F6B45FCAB06345E921D8490F9EF|java.lang.Integer/3438268394|1|2|3|3|1337|";
+		final String serializedContent = "5|0|4|http://192.168.2.103:58365/de.csenk.gwtws.WebSocket.JUnit/|96917F6B45FCAB06345E921D8490F9EF|java.lang.String/2004016611|Hello World!|1|2|3|4|";
 		
 		final SerializationPolicyProvider mockPolicyProvider = mockContext.mock(SerializationPolicyProvider.class);
 		final NextFilter mockNextFilter = mockContext.mock(NextFilter.class);
@@ -56,7 +56,7 @@ public class ServerGWTSerializationFilterTest extends TestCase {
 				oneOf(mockPolicyProvider).getSerializationPolicy(
 						with(any(String.class)), with(any(String.class)));
 					will(returnValue(serializationPolicy));
-				oneOf(mockNextFilter).onMessageReceived(mockConnection, with(any(Integer.class)));
+				oneOf(mockNextFilter).onMessageReceived(with(mockConnection), with("Hello World!"));
 			}
 		});
 		

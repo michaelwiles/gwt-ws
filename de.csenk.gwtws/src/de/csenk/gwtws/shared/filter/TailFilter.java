@@ -23,7 +23,7 @@ import de.csenk.gwtws.shared.Connection;
  * @time 11:17:13
  *
  */
-final class TailFilter extends FilterImpl {
+final class TailFilter extends DefaultFilter {
 
 	public static final String NAME = "tail";
 	
@@ -32,7 +32,7 @@ final class TailFilter extends FilterImpl {
 	 */
 	@Override
 	public void onConnectionClosed(NextFilter nextFilter, Connection connection)
-			throws Exception {
+			throws Throwable {
 		connection.getHandler().onConnectionClosed(connection);
 	}
 
@@ -41,7 +41,7 @@ final class TailFilter extends FilterImpl {
 	 */
 	@Override
 	public void onConnectionOpened(NextFilter nextFilter, Connection connection)
-			throws Exception {
+			throws Throwable {
 		connection.getHandler().onConnectionOpened(connection);
 	}
 
@@ -59,7 +59,7 @@ final class TailFilter extends FilterImpl {
 	 */
 	@Override
 	public void onMessageReceived(NextFilter nextFilter, Connection connection,
-			Object message) throws Exception {
+			Object message) throws Throwable {
 		connection.getHandler().onMessageReceived(connection, message);
 	}
 

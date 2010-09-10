@@ -64,14 +64,14 @@ public class FilterChainImplTest extends TestCase {
 
 	/**
 	 * Test method for
-	 * {@link de.csenk.gwtws.shared.filter.FilterChainImpl#addLast(java.lang.String, de.csenk.gwtws.shared.Filter)}
+	 * {@link de.csenk.gwtws.shared.filter.DefaultFilterChain#addLast(java.lang.String, de.csenk.gwtws.shared.Filter)}
 	 * .
 	 * @throws Throwable 
 	 */
 	public final void testAddLast() throws Throwable {
 		final Filter filter1 = mockContext.mock(Filter.class, "filter1");
 		final Filter filter2 = mockContext.mock(Filter.class, "filter2");
-		final FilterChain filterChain = new FilterChainImpl(mockConnection);
+		final FilterChain filterChain = new DefaultFilterChain(mockConnection);
 
 		final String MESSAGE = "Hello World!";
 		final String FILTER_SEQUENCE = "filterSequence";
@@ -108,13 +108,13 @@ public class FilterChainImplTest extends TestCase {
 
 	/**
 	 * Test method for
-	 * {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireSend(java.lang.Object)}
+	 * {@link de.csenk.gwtws.shared.filter.DefaultFilterChain#fireSend(java.lang.Object)}
 	 * .
 	 * @throws Throwable 
 	 */
 	public final void testFireSend() throws Throwable {
 		final Filter filter = mockContext.mock(Filter.class, "filter");
-		final FilterChain filterChain = new FilterChainImpl(mockConnection);
+		final FilterChain filterChain = new DefaultFilterChain(mockConnection);
 
 		final String MESSAGE = "Hello World!";
 
@@ -132,12 +132,12 @@ public class FilterChainImplTest extends TestCase {
 
 	/**
 	 * Test method for
-	 * {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireExceptionCaught(java.lang.Throwable)}
+	 * {@link de.csenk.gwtws.shared.filter.DefaultFilterChain#fireExceptionCaught(java.lang.Throwable)}
 	 * .
 	 */
 	public final void testFireExceptionCaught() {
 		final Filter filter = mockContext.mock(Filter.class, "filter");
-		final FilterChain filterChain = new FilterChainImpl(mockConnection);
+		final FilterChain filterChain = new DefaultFilterChain(mockConnection);
 
 		final Throwable THROWABLE = new Exception();
 		
@@ -155,13 +155,13 @@ public class FilterChainImplTest extends TestCase {
 
 	/**
 	 * Test method for
-	 * {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireConnectionClosed()}
+	 * {@link de.csenk.gwtws.shared.filter.DefaultFilterChain#fireConnectionClosed()}
 	 * .
 	 * @throws Throwable 
 	 */
 	public final void testFireConnectionClosed() throws Throwable {
 		final Filter filter = mockContext.mock(Filter.class, "filter");
-		final FilterChain filterChain = new FilterChainImpl(mockConnection);
+		final FilterChain filterChain = new DefaultFilterChain(mockConnection);
 
 		mockContext.checking(new Expectations() {
 			{
@@ -177,13 +177,13 @@ public class FilterChainImplTest extends TestCase {
 
 	/**
 	 * Test method for
-	 * {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireConnectionOpened()}
+	 * {@link de.csenk.gwtws.shared.filter.DefaultFilterChain#fireConnectionOpened()}
 	 * .
 	 * @throws Throwable 
 	 */
 	public final void testFireConnectionOpened() throws Throwable {
 		final Filter filter = mockContext.mock(Filter.class, "filter");
-		final FilterChain filterChain = new FilterChainImpl(mockConnection);
+		final FilterChain filterChain = new DefaultFilterChain(mockConnection);
 
 		mockContext.checking(new Expectations() {
 			{
@@ -199,13 +199,13 @@ public class FilterChainImplTest extends TestCase {
 
 	/**
 	 * Test method for
-	 * {@link de.csenk.gwtws.shared.filter.FilterChainImpl#fireMessageReceived(java.lang.Object)}
+	 * {@link de.csenk.gwtws.shared.filter.DefaultFilterChain#fireMessageReceived(java.lang.Object)}
 	 * .
 	 * @throws Throwable 
 	 */
 	public final void testFireMessageReceived() throws Throwable {
 		final Filter filter = mockContext.mock(Filter.class, "filter");
-		final FilterChain filterChain = new FilterChainImpl(mockConnection);
+		final FilterChain filterChain = new DefaultFilterChain(mockConnection);
 
 		final String MESSAGE = "Hello World!";
 

@@ -25,13 +25,15 @@ public interface Handler {
 
 	/**
 	 * @param connection
+	 * @throws Throwable TODO
 	 */
-	void onConnectionOpened(Connection connection) throws Exception;
+	void onConnectionOpened(Connection connection) throws Throwable;
 	
 	/**
 	 * @param connection
+	 * @throws Throwable TODO
 	 */
-	void onConnectionClosed(Connection connection) throws Exception;
+	void onConnectionClosed(Connection connection) throws Throwable;
 	
 	/**
 	 * @param caught
@@ -41,7 +43,8 @@ public interface Handler {
 	/**
 	 * @param connection
 	 * @param message
+	 * @throws Throwable TODO
 	 */
-	void onMessageReceived(Connection connection, Object message) throws Exception;
+	void onMessageReceived(Connection connection, Object message) throws Throwable;
 	
 }

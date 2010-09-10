@@ -18,7 +18,7 @@ package de.csenk.gwtws.client.filter;
 import com.allen_sauer.gwt.log.client.Log;
 
 import de.csenk.gwtws.shared.Connection;
-import de.csenk.gwtws.shared.filter.FilterImpl;
+import de.csenk.gwtws.shared.filter.DefaultFilter;
 
 /**
  * @author senk.christian@googlemail.com
@@ -26,7 +26,7 @@ import de.csenk.gwtws.shared.filter.FilterImpl;
  * @time 14:33:31
  *
  */
-public class ClientLoggingFilter extends FilterImpl {
+public class ClientLoggingFilter extends DefaultFilter {
 
 	/* (non-Javadoc)
 	 * @see de.csenk.gwtws.shared.filter.FilterImpl#onMessageReceived(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)

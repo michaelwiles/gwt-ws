@@ -21,7 +21,7 @@ import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.FilterChain;
 import de.csenk.gwtws.shared.Handler;
 import de.csenk.gwtws.shared.Sender;
-import de.csenk.gwtws.shared.filter.FilterChainImpl;
+import de.csenk.gwtws.shared.filter.DefaultFilterChain;
 
 /**
  * @author senk.christian@googlemail.com
@@ -43,7 +43,7 @@ public class JettyWebSocketConnection implements WebSocket, Connection {
 	 */
 	public JettyWebSocketConnection(final Handler handler) {
 		this.handler = handler;
-		this.filterChain = new FilterChainImpl(this);
+		this.filterChain = new DefaultFilterChain(this);
 	}
 
 	/* (non-Javadoc)

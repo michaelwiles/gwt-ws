@@ -24,7 +24,7 @@ import de.csenk.gwtws.shared.Filter;
  * @time 15:41:34
  *
  */
-public class FilterImpl implements Filter {
+public class DefaultFilter implements Filter {
 
 	/* (non-Javadoc)
 	 * @see de.csenk.gwtws.shared.Filter#onConnectionClosed(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection)

@@ -66,7 +66,7 @@ public class ServerGWTSerializerTest extends TestCase {
 	 * @throws SerializationException 
 	 */
 	public final void testDeserialize() throws SerializationException {
-		final String serializedContent = "5|0|3|http://192.168.2.103:62849/de.csenk.gwtws.WebSocket.JUnit/|96917F6B45FCAB06345E921D8490F9EF|java.lang.Integer/3438268394|1|2|3|3|1337|";
+		final String serializedContent = "5|0|4|http://192.168.2.103:58365/de.csenk.gwtws.WebSocket.JUnit/|96917F6B45FCAB06345E921D8490F9EF|java.lang.String/2004016611|Hello World!|1|2|3|4|";
 		final SerializationPolicy serializationPolicy = RPC.getDefaultSerializationPolicy();
 		final ServerGWTSerializer serverSerializer = new ServerGWTSerializer(mockPolicyProvider);
 
@@ -79,8 +79,8 @@ public class ServerGWTSerializerTest extends TestCase {
 		});
 		
 		Object obj = serverSerializer.deserialize(serializedContent);
-		assertTrue(obj instanceof Integer);
-		assertEquals(new Integer(1337), obj);
+		assertTrue(obj instanceof String);
+		assertEquals("Hello World!", obj);
 	}
 
 	/**
@@ -92,9 +92,8 @@ public class ServerGWTSerializerTest extends TestCase {
 	public final void testSerialize() throws SerializationException {
 		final ServerGWTSerializer serverSerializer = new ServerGWTSerializer(null);
 		
-		String str = serverSerializer.serialize(new Integer(1337));
-		System.out.println(str);
-		assertTrue(str.contains("java.lang.Integer"));
+		String str = serverSerializer.serialize("Hello World!");
+		assertTrue(str.contains("java.lang.String"));
 	}
 
 }

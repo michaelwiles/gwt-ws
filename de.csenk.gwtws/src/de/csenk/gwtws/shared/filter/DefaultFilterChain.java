@@ -29,7 +29,7 @@ import de.csenk.gwtws.shared.Filter.NextFilter;
  * @time 16:12:24
  * 
  */
-public class FilterChainImpl implements FilterChain {
+public class DefaultFilterChain implements FilterChain {
 
 	private final Map<String, Entry> filterMap = new HashMap<String, Entry>();
 
@@ -38,7 +38,7 @@ public class FilterChainImpl implements FilterChain {
 	private final EntryImpl tailEntry;
 	private final EntryImpl headEntry;
 
-	public FilterChainImpl(Connection connection) {
+	public DefaultFilterChain(Connection connection) {
 		this.connection = connection;
 
 		tailEntry = new EntryImpl(TailFilter.NAME, new TailFilter(), null, null);
@@ -54,7 +54,7 @@ public class FilterChainImpl implements FilterChain {
 	 * de.csenk.gwtws.shared.Filter)
 	 */
 	@Override
-	public void addLast(String filterName, Filter filter) {
+	public synchronized void addLast(String filterName, Filter filter) {
 		checkNameIsNotReserved(filterName);
 		
 		EntryImpl filterEntry = insertFilter(tailEntry.prevEntry, filterName, filter);
@@ -74,7 +74,7 @@ public class FilterChainImpl implements FilterChain {
 	 * @param name
 	 * @param filter
 	 */
-	private EntryImpl insertFilter(EntryImpl prevEntry, String name, Filter filter) {
+	private synchronized EntryImpl insertFilter(EntryImpl prevEntry, String name, Filter filter) {
 		EntryImpl nextEntry = prevEntry.nextEntry;
 		EntryImpl newEntry = new EntryImpl(name, filter, prevEntry, nextEntry);
 		
@@ -92,7 +92,7 @@ public class FilterChainImpl implements FilterChain {
 	 * .Connection, java.lang.Object)
 	 */
 	@Override
-	public void fireSend(Object message) {
+	public synchronized void fireSend(Object message) {
 		callPreviousSend(tailEntry, message);
 	}
 
@@ -123,7 +123,7 @@ public class FilterChainImpl implements FilterChain {
 	 * shared.Connection, java.lang.Throwable)
 	 */
 	@Override
-	public void fireExceptionCaught(Throwable caught) {
+	public synchronized void fireExceptionCaught(Throwable caught) {
 		callNextExceptionCaught(headEntry, caught);
 	}
 
@@ -154,7 +154,7 @@ public class FilterChainImpl implements FilterChain {
 	 * .shared.Connection)
 	 */
 	@Override
-	public void fireConnectionClosed() {
+	public synchronized void fireConnectionClosed() {
 		callNextConnectionClosed(headEntry);
 	}
 
@@ -185,7 +185,7 @@ public class FilterChainImpl implements FilterChain {
 	 * .shared.Connection)
 	 */
 	@Override
-	public void fireConnectionOpened() {
+	public synchronized void fireConnectionOpened() {
 		callNextConnectionOpened(headEntry);
 	}
 
@@ -216,7 +216,7 @@ public class FilterChainImpl implements FilterChain {
 	 * shared.Connection, java.lang.Object)
 	 */
 	@Override
-	public void fireMessageReceived(Object message) {
+	public synchronized void fireMessageReceived(Object message) {
 		callNextMessageReceived(headEntry, message);
 	}
 

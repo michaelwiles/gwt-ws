@@ -24,7 +24,7 @@ import de.csenk.gwtws.shared.Sender;
  * @time 11:16:41
  *
  */
-final class HeadFilter extends FilterImpl {
+final class HeadFilter extends DefaultFilter {
 
 	public static final String NAME = "head";
 	

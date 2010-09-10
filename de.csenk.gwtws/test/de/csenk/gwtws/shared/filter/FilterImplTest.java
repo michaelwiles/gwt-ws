@@ -62,11 +62,11 @@ public class FilterImplTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterImpl#onConnectionClosed(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection)}.
+	 * Test method for {@link de.csenk.gwtws.shared.filter.DefaultFilter#onConnectionClosed(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection)}.
 	 * @throws Throwable 
 	 */
 	public final void testOnConnectionClosed() throws Throwable {
-		final Filter filter = new FilterImpl();
+		final Filter filter = new DefaultFilter();
 		
 		mockContext.checking(new Expectations() {{
 			oneOf(mockNextFilter).onConnectionClosed(mockConnection);
@@ -76,10 +76,10 @@ public class FilterImplTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterImpl#onConnectionOpened(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection)}.
+	 * Test method for {@link de.csenk.gwtws.shared.filter.DefaultFilter#onConnectionOpened(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection)}.
 	 */
 	public final void testOnConnectionOpened() throws Throwable {
-		final Filter filter = new FilterImpl();
+		final Filter filter = new DefaultFilter();
 		
 		mockContext.checking(new Expectations() {{
 			oneOf(mockNextFilter).onConnectionOpened(mockConnection);
@@ -89,10 +89,10 @@ public class FilterImplTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterImpl#onExceptionCaught(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Throwable)}.
+	 * Test method for {@link de.csenk.gwtws.shared.filter.DefaultFilter#onExceptionCaught(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Throwable)}.
 	 */
 	public final void testOnExceptionCaught() throws Throwable {
-		final Filter filter = new FilterImpl();
+		final Filter filter = new DefaultFilter();
 		
 		final Throwable THROWABLE = new Exception();
 		
@@ -104,11 +104,11 @@ public class FilterImplTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterImpl#onMessageReceived(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)}.
+	 * Test method for {@link de.csenk.gwtws.shared.filter.DefaultFilter#onMessageReceived(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)}.
 	 * @throws Throwable 
 	 */
 	public final void testOnMessageReceived() throws Throwable {
-		final Filter filter = new FilterImpl();
+		final Filter filter = new DefaultFilter();
 		
 		final String MESSAGE = "Hello World!";
 		
@@ -120,10 +120,10 @@ public class FilterImplTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link de.csenk.gwtws.shared.filter.FilterImpl#onSend(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)}.
+	 * Test method for {@link de.csenk.gwtws.shared.filter.DefaultFilter#onSend(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)}.
 	 */
 	public final void testOnSend() throws Throwable {
-		final Filter filter = new FilterImpl();
+		final Filter filter = new DefaultFilter();
 		
 		final String MESSAGE = "Hello World!";
 		

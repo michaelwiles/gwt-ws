@@ -16,7 +16,7 @@
 package de.csenk.gwtws.server.filter;
 
 import de.csenk.gwtws.shared.Connection;
-import de.csenk.gwtws.shared.filter.FilterImpl;
+import de.csenk.gwtws.shared.filter.DefaultFilter;
 
 /**
  * @author senk.christian@googlemail.com
@@ -24,7 +24,7 @@ import de.csenk.gwtws.shared.filter.FilterImpl;
  * @time 10:56:57
  *
  */
-public class StatisticsFilter extends FilterImpl {
+public class StatisticsFilter extends DefaultFilter {
 
 	private long receivedByteCount;
 	private long sentByteCount;

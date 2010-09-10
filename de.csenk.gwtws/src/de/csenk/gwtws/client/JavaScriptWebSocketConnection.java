@@ -20,7 +20,7 @@ import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.FilterChain;
 import de.csenk.gwtws.shared.Handler;
 import de.csenk.gwtws.shared.Sender;
-import de.csenk.gwtws.shared.filter.FilterChainImpl;
+import de.csenk.gwtws.shared.filter.DefaultFilterChain;
 
 /**
  * @author senk.christian@googlemail.com
@@ -46,7 +46,7 @@ public class JavaScriptWebSocketConnection implements Connection {
 		this.webSocket = createWebSocket(url);
 		
 		this.webSocketSender = new WebSocketSender(webSocket);
-		this.filterChain = new FilterChainImpl(this);
+		this.filterChain = new DefaultFilterChain(this);
 	}
 
 	/* (non-Javadoc)

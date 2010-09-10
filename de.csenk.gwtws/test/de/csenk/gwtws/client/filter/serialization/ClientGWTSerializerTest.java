@@ -37,11 +37,11 @@ public class ClientGWTSerializerTest extends GWTTestCase {
 		//Will create a deferred binding deriving from ClientGWTSerializer
 		final GWTSerializer serializer = GWT.create(GWTSerializer.class);
 		
-		final String serializedContent = "[1337,2,1,[\"java.lang.Integer\",\"java.lang.Integer/3438268394\"],0,5]";
+		final String serializedContent = "[2,1,[\"java.lang.String\",\"Hello World!\"],0,5]";
 		Object obj = serializer.deserialize(serializedContent);
 		
 		assertTrue(obj instanceof Integer);
-		assertEquals(new Integer(1337), obj);
+		assertEquals("Hello World!", obj);
 	}
 
 	/**
@@ -52,8 +52,8 @@ public class ClientGWTSerializerTest extends GWTTestCase {
 		//Will create a deferred binding deriving from ClientGWTSerializer
 		final GWTSerializer serializer = GWT.create(GWTSerializer.class);
 		
-		final String serializedInteger = serializer.serialize(new Integer(1337));
-		assertTrue(serializedInteger.contains("java.lang.Integer"));
+		final String serializedString = serializer.serialize("Hello World!");
+		assertTrue(serializedString.contains("java.lang.String"));
 	}
 
 	/* (non-Javadoc)

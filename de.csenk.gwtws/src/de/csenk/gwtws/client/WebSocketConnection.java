@@ -15,7 +15,6 @@
 
 package de.csenk.gwtws.client;
 
-import de.csenk.gwtws.client.js.JavaScriptWebSocket;
 import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.FilterChain;
 import de.csenk.gwtws.shared.Handler;
@@ -28,9 +27,11 @@ import de.csenk.gwtws.shared.filter.DefaultFilterChain;
  * @time 13:44:45
  *
  */
-public class JavaScriptWebSocketConnection implements Connection {
+public class WebSocketConnection implements Connection {
 
 	private final Handler handler;
+	private final WebSocketFactory socketFactory;
+	
 	private final WebSocket webSocket;
 	private final Sender webSocketSender;
 	
@@ -40,9 +41,10 @@ public class JavaScriptWebSocketConnection implements Connection {
 	 * @param url
 	 * @param handler
 	 */
-	public JavaScriptWebSocketConnection(final String url, final Handler handler) {
-		//TODO gwtws: Find a way to make this class more testable
+	public WebSocketConnection(final String url, final Handler handler, final WebSocketFactory socketFactory) {
 		this.handler = handler;
+		this.socketFactory = socketFactory;
+		
 		this.webSocket = createWebSocket(url);
 		
 		this.webSocketSender = new WebSocketSender(webSocket);
@@ -94,7 +96,7 @@ public class JavaScriptWebSocketConnection implements Connection {
 	 * @return
 	 */
 	private WebSocket createWebSocket(String url) {
-		return new JavaScriptWebSocket(url, new WebSocketCallback() {
+		return socketFactory.createWebSocket(url, new WebSocketCallback() {
 			
 			@Override
 			public void onOpen(WebSocket webSocket) {

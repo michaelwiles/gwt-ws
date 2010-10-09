@@ -13,28 +13,26 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.shared;
+package de.csenk.gwtws.client.js;
+
+import de.csenk.gwtws.client.WebSocket;
+import de.csenk.gwtws.client.WebSocketCallback;
+import de.csenk.gwtws.client.WebSocketFactory;
 
 /**
  * @author senk.christian@googlemail.com
- * @date 07.09.2010
- * @time 20:45:46
+ * @date 09.10.2010
+ * @time 11:21:56
  *
  */
-public interface MessageDispatchingHandler extends Handler {
+public class JavaScriptWebSocketFactory implements WebSocketFactory {
 
-	/**
-	 * @param <E>
-	 * @param clazz
-	 * @param handler
+	/* (non-Javadoc)
+	 * @see de.csenk.gwtws.client.WebSocketFactory#createWebSocket(java.lang.String, de.csenk.gwtws.client.WebSocketCallback)
 	 */
-	<E> void addReceivedMessageHandler(Class<E> clazz, MessageHandler<? super E> handler);
-	
-	/**
-	 * @param <E>
-	 * @param clazz
-	 * @param handler
-	 */
-	<E extends Throwable> void addExceptionHandler(Class<E> clazz, ExceptionHandler<? super E> handler);
+	@Override
+	public WebSocket createWebSocket(String url, WebSocketCallback callback) {
+		return new JavaScriptWebSocket(url, callback);
+	}
 
 }

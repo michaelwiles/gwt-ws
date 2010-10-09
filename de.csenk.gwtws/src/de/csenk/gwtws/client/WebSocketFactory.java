@@ -13,28 +13,24 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.shared;
+package de.csenk.gwtws.client;
 
 /**
  * @author senk.christian@googlemail.com
- * @date 07.09.2010
- * @time 20:45:46
+ * @date 09.10.2010
+ * @time 11:19:27
  *
+ * Factory interface to create web sockets
  */
-public interface MessageDispatchingHandler extends Handler {
+public interface WebSocketFactory {
 
 	/**
-	 * @param <E>
-	 * @param clazz
-	 * @param handler
+	 * Creates a {@link WebSocket} implementation.
+	 * 
+	 * @param url
+	 * @param callback
+	 * @return
 	 */
-	<E> void addReceivedMessageHandler(Class<E> clazz, MessageHandler<? super E> handler);
+	WebSocket createWebSocket(String url, WebSocketCallback callback);
 	
-	/**
-	 * @param <E>
-	 * @param clazz
-	 * @param handler
-	 */
-	<E extends Throwable> void addExceptionHandler(Class<E> clazz, ExceptionHandler<? super E> handler);
-
 }

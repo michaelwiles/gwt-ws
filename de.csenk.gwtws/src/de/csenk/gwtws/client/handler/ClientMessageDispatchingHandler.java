@@ -32,7 +32,7 @@ public class ClientMessageDispatchingHandler extends
 	/* (non-Javadoc)
 	 * @see de.csenk.gwtws.shared.handler.DefaultMessageDispatchingHandler#findHandler(java.util.Map, java.lang.Class, java.util.Set)
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
 	protected Object findHandler(Map handlers, Class type, Set<Class> triedTypes) {
 		if (handlers == null || type == null)

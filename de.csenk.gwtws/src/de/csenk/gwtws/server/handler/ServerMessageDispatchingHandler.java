@@ -36,7 +36,7 @@ public class ServerMessageDispatchingHandler extends
 	 * @param object
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	protected synchronized Object findHandler(Map handlers, Class type, Set<Class> triedTypes) {
 		if (handlers == null || type == null)
 			return null;

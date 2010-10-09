@@ -27,7 +27,6 @@ import de.csenk.gwtws.client.WebSocketCallback;
  *
  * Represents the GWT version of the JavaScripts new WebSocket component.
  */
-@SuppressWarnings("unused")
 public class JavaScriptWebSocket implements WebSocket {
 	
 	/**

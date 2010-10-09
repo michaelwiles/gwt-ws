@@ -149,7 +149,7 @@ public abstract class DefaultMessageDispatchingHandler implements
 	 * @param object
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	protected abstract Object findHandler(Map handlers, Class type, Set<Class> triedTypes);
 
 }

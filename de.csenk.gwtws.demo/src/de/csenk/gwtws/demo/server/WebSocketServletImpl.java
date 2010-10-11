@@ -22,6 +22,7 @@ import org.eclipse.jetty.websocket.WebSocketServlet;
 
 import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
 
+import de.csenk.gwtws.demo.shared.MessageOfTheDayRequest;
 import de.csenk.gwtws.demo.shared.Ping;
 import de.csenk.gwtws.server.filter.StatisticsFilter;
 import de.csenk.gwtws.server.filter.serialization.ServerGWTSerializationFilter;
@@ -49,6 +50,7 @@ public class WebSocketServletImpl extends WebSocketServlet {
 	protected WebSocket doWebSocketConnect(HttpServletRequest arg0, String arg1) {
 		MessageDispatchingHandler handler = new ServerMessageDispatchingHandler();
 		handler.addReceivedMessageHandler(Ping.class, new PingHandler());
+		handler.addReceivedMessageHandler(MessageOfTheDayRequest.class, new MessageOfTheDayHandler());
 		
 		JettyWebSocketConnection webSocketConnection = new JettyWebSocketConnection(handler);
 		buildFilterChain(webSocketConnection.getFilterChain());

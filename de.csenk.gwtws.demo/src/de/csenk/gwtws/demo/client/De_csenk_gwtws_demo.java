@@ -28,6 +28,7 @@ import de.csenk.gwtws.demo.shared.Ping;
 import de.csenk.gwtws.shared.Connection;
 import de.csenk.gwtws.shared.FilterChain;
 import de.csenk.gwtws.shared.MessageDispatchingHandler;
+import de.csenk.gwtws.shared.filter.requestresponse.RequestResponseFilter;
 import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
 
 /**
@@ -57,6 +58,7 @@ public class De_csenk_gwtws_demo implements EntryPoint {
 		
 		filterChain.addLast("logging", new ClientLoggingFilter());
 		filterChain.addLast("serialization", new ClientGWTSerializationFilter(serializer));
+		filterChain.addLast("requestresponse", new RequestResponseFilter());
 	}
 	
 }

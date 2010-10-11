@@ -21,8 +21,11 @@ import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.Timer;
 
 import de.csenk.gwtws.client.handler.ClientMessageDispatchingHandler;
+import de.csenk.gwtws.demo.shared.MessageOfTheDayRequest;
+import de.csenk.gwtws.demo.shared.MessageOfTheDayResponse;
 import de.csenk.gwtws.demo.shared.Ping;
 import de.csenk.gwtws.shared.Connection;
+import de.csenk.gwtws.shared.filter.requestresponse.ResponseCallback;
 
 
 /**
@@ -50,6 +53,28 @@ public class WebSocketClientHandler extends ClientMessageDispatchingHandler {
 	public void onConnectionOpened(final Connection connection) throws Throwable {
 		Log.info("Connection opened");
 		
+		startPinging(connection);	
+		requestMessageOfTheDay(connection);
+	}
+
+	/**
+	 * @param connection
+	 */
+	private void requestMessageOfTheDay(final Connection connection) {
+		connection.send(new MessageOfTheDayRequest(new ResponseCallback<MessageOfTheDayResponse>() {
+			
+			@Override
+			public void onMessage(MessageOfTheDayResponse response) {
+				Log.info("Message of the Day: " + response.getMessageOfTheDay());
+			}
+			
+		}));
+	}
+
+	/**
+	 * @param connection
+	 */
+	private void startPinging(final Connection connection) {
 		pingTimer = new Timer() {
 
 			@Override
@@ -58,7 +83,7 @@ public class WebSocketClientHandler extends ClientMessageDispatchingHandler {
 			}
 			
 		};
-		pingTimer.scheduleRepeating(1000);
+		pingTimer.scheduleRepeating(10000);
 	}
 
 }

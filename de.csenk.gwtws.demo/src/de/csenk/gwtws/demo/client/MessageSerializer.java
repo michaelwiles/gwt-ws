@@ -16,6 +16,8 @@
 package de.csenk.gwtws.demo.client;
 
 import de.csenk.gwtws.demo.shared.Message;
+import de.csenk.gwtws.shared.filter.requestresponse.RequestMessage;
+import de.csenk.gwtws.shared.filter.requestresponse.ResponseMessage;
 import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
 import de.csenk.gwtws.shared.filter.serialization.Serializable;
 
@@ -25,7 +27,7 @@ import de.csenk.gwtws.shared.filter.serialization.Serializable;
  * @time 22:33:00
  *
  */
-@Serializable({Message.class})
+@Serializable({Message.class, RequestMessage.class, ResponseMessage.class})
 public interface MessageSerializer extends GWTSerializer {
 
 }

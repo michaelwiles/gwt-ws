@@ -25,7 +25,7 @@ import de.csenk.gwtws.shared.filter.requestresponse.ResponseCallback;
  *
  */
 @SuppressWarnings("serial")
-public class MessageOfTheDayRequest extends RequestMessage {
+public class MessageOfTheDayRequest extends RequestMessage<MessageOfTheDayResponse> {
 
 	/**
 	 * 

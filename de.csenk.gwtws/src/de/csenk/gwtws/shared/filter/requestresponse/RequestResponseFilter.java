@@ -30,7 +30,7 @@ import de.csenk.gwtws.shared.filter.DefaultFilter;
 public class RequestResponseFilter extends DefaultFilter {
 	
 	private int requestCounter = Integer.MIN_VALUE;
-	private final Map<Integer, ResponseCallback<? extends ResponseMessage>> requestMap = new HashMap<Integer, ResponseCallback<? extends ResponseMessage>>();
+	private final Map<Integer, ResponseCallback<?>> requestMap = new HashMap<Integer, ResponseCallback<?>>();
 	
 	/* (non-Javadoc)
 	 * @see de.csenk.gwtws.shared.Filter#onMessageReceived(de.csenk.gwtws.shared.Filter.NextFilter, de.csenk.gwtws.shared.Connection, java.lang.Object)
@@ -63,7 +63,7 @@ public class RequestResponseFilter extends DefaultFilter {
 		if (!(message instanceof RequestMessage))
 			nextFilter.onSend(connection, message);
 		
-		RequestMessage requestMessage = (RequestMessage) message;
+		RequestMessage<?> requestMessage = (RequestMessage<?>) message;
 		if (requestMessage.getResponseCallback() != null) {
 			requestMessage.setRequestID(generateRequestID());
 			

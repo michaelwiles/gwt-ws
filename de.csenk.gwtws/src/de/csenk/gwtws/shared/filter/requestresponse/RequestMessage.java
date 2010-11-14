@@ -24,16 +24,16 @@ import java.io.Serializable;
  *
  */
 @SuppressWarnings("serial")
-public abstract class RequestMessage implements Serializable {
+public abstract class RequestMessage<T extends ResponseMessage> implements Serializable {
 
 	private Integer requestID;
 	
-	private transient ResponseCallback<? extends ResponseMessage> responseCallback;
+	private transient ResponseCallback<T> responseCallback;
 	
 	/**
 	 * @param responseCallback
 	 */
-	public RequestMessage(ResponseCallback<? extends ResponseMessage> responseCallback) {
+	public RequestMessage(ResponseCallback<T> responseCallback) {
 		this.responseCallback = responseCallback;
 	}
 	
@@ -54,7 +54,7 @@ public abstract class RequestMessage implements Serializable {
 	/**
 	 * @return
 	 */
-	public ResponseCallback<? extends ResponseMessage> getResponseCallback() {
+	public ResponseCallback<T> getResponseCallback() {
 		return responseCallback;
 	}
 

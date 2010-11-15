@@ -13,19 +13,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.demo.client;
+package de.csenk.gwt.ws.demo.client;
 
 import java.util.Date;
 
 import com.allen_sauer.gwt.log.client.Log;
 import com.google.gwt.user.client.Timer;
 
-import de.csenk.gwtws.client.handler.ClientMessageDispatchingHandler;
-import de.csenk.gwtws.demo.shared.MessageOfTheDayRequest;
-import de.csenk.gwtws.demo.shared.MessageOfTheDayResponse;
-import de.csenk.gwtws.demo.shared.Ping;
-import de.csenk.gwtws.shared.Connection;
-import de.csenk.gwtws.shared.filter.requestresponse.ResponseCallback;
+import de.csenk.gwt.ws.client.handler.ClientMessageDispatchingHandler;
+import de.csenk.gwt.ws.demo.shared.MessageOfTheDayRequest;
+import de.csenk.gwt.ws.demo.shared.MessageOfTheDayResponse;
+import de.csenk.gwt.ws.demo.shared.Ping;
+import de.csenk.gwt.ws.shared.Connection;
+import de.csenk.gwt.ws.shared.filter.requestresponse.ResponseCallback;
 
 
 /**

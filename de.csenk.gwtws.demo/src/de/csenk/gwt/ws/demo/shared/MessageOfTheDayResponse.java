@@ -13,32 +13,46 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.demo.shared;
+package de.csenk.gwt.ws.demo.shared;
 
-import de.csenk.gwtws.shared.filter.requestresponse.RequestMessage;
-import de.csenk.gwtws.shared.filter.requestresponse.ResponseCallback;
+import de.csenk.gwt.ws.shared.filter.requestresponse.ResponseMessage;
 
 /**
  * @author Christian
  * @date 11.10.2010
- * @time 20:37:13
+ * @time 20:37:49
  *
  */
 @SuppressWarnings("serial")
-public class MessageOfTheDayRequest extends RequestMessage<MessageOfTheDayResponse> {
+public class MessageOfTheDayResponse extends ResponseMessage {
 
-	/**
-	 * 
-	 */
-	public MessageOfTheDayRequest() {
+	private String messageOfTheDay;
+	
+	public MessageOfTheDayResponse() {
 		super(null);
 	}
 	
 	/**
-	 * @param responseCallback
+	 * @param requestID
 	 */
-	public MessageOfTheDayRequest(ResponseCallback<MessageOfTheDayResponse> responseCallback) {
-		super(responseCallback);
+	public MessageOfTheDayResponse(MessageOfTheDayRequest motdRequest, String messageOfTheDay) {
+		super(motdRequest.getRequestID());
+		
+		this.messageOfTheDay = messageOfTheDay;
+	}
+
+	/**
+	 * @return the messageOfTheDay
+	 */
+	public String getMessageOfTheDay() {
+		return messageOfTheDay;
+	}
+
+	/**
+	 * @param messageOfTheDay the messageOfTheDay to set
+	 */
+	public void setMessageOfTheDay(String messageOfTheDay) {
+		this.messageOfTheDay = messageOfTheDay;
 	}
 
 }

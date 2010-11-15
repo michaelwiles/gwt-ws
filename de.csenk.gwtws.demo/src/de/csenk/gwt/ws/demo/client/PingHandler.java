@@ -13,16 +13,31 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.demo.shared;
+package de.csenk.gwt.ws.demo.client;
 
-import java.io.Serializable;
+import java.util.Date;
+
+import com.allen_sauer.gwt.log.client.Log;
+
+import de.csenk.gwt.ws.demo.shared.Ping;
+import de.csenk.gwt.ws.shared.Connection;
+import de.csenk.gwt.ws.shared.MessageHandler;
 
 /**
  * @author senk.christian@googlemail.com
- * @date 01.09.2010
- * @time 22:32:08
+ * @date 09.09.2010
+ * @time 20:01:48
  *
  */
-public interface Message extends Serializable {
-	
+public class PingHandler implements MessageHandler<Ping> {
+
+	/* (non-Javadoc)
+	 * @see de.csenk.gwt.ws.shared.MessageHandler#handleMessage(de.csenk.gwt.ws.shared.Connection, java.lang.Object)
+	 */
+	@Override
+	public void handleMessage(Connection connection, Ping message) {
+		long delay = new Date().getTime() - message.getTimestamp();
+		Log.info("Actual ping is " + delay + "ms");
+	}
+
 }

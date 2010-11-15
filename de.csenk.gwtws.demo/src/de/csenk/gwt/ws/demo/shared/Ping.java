@@ -13,21 +13,37 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.demo.client;
-
-import de.csenk.gwtws.demo.shared.Message;
-import de.csenk.gwtws.shared.filter.requestresponse.RequestMessage;
-import de.csenk.gwtws.shared.filter.requestresponse.ResponseMessage;
-import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
-import de.csenk.gwtws.shared.filter.serialization.Serializable;
+package de.csenk.gwt.ws.demo.shared;
 
 /**
  * @author senk.christian@googlemail.com
  * @date 01.09.2010
- * @time 22:33:00
- *
+ * @time 22:36:35
+ * 
  */
-@Serializable({Message.class, RequestMessage.class, ResponseMessage.class})
-public interface MessageSerializer extends GWTSerializer {
+@SuppressWarnings("serial")
+public class Ping implements Message {
+
+	private long timestamp;
+
+	/**
+	 * 
+	 */
+	public Ping() {
+	}
+
+	/**
+	 * @param timestamp
+	 */
+	public Ping(long timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	/**
+	 * @return the timestamp
+	 */
+	public long getTimestamp() {
+		return timestamp;
+	}
 
 }

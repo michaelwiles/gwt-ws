@@ -13,7 +13,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.demo.server;
+package de.csenk.gwt.ws.demo.server;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,16 +22,16 @@ import org.eclipse.jetty.websocket.WebSocketServlet;
 
 import com.google.gwt.user.server.rpc.SerializationPolicyProvider;
 
-import de.csenk.gwtws.demo.shared.MessageOfTheDayRequest;
-import de.csenk.gwtws.demo.shared.Ping;
-import de.csenk.gwtws.server.filter.StatisticsFilter;
-import de.csenk.gwtws.server.filter.serialization.ServerGWTSerializationFilter;
-import de.csenk.gwtws.server.filter.serialization.ServletContextSerializationPolicyProvider;
-import de.csenk.gwtws.server.handler.ServerMessageDispatchingHandler;
-import de.csenk.gwtws.server.jetty.JettyWebSocketConnection;
-import de.csenk.gwtws.shared.Filter;
-import de.csenk.gwtws.shared.FilterChain;
-import de.csenk.gwtws.shared.MessageDispatchingHandler;
+import de.csenk.gwt.ws.demo.shared.MessageOfTheDayRequest;
+import de.csenk.gwt.ws.demo.shared.Ping;
+import de.csenk.gwt.ws.server.filter.StatisticsFilter;
+import de.csenk.gwt.ws.server.filter.serialization.ServerGWTSerializationFilter;
+import de.csenk.gwt.ws.server.filter.serialization.ServletContextSerializationPolicyProvider;
+import de.csenk.gwt.ws.server.handler.ServerMessageDispatchingHandler;
+import de.csenk.gwt.ws.server.jetty.JettyWebSocketConnection;
+import de.csenk.gwt.ws.shared.Filter;
+import de.csenk.gwt.ws.shared.FilterChain;
+import de.csenk.gwt.ws.shared.MessageDispatchingHandler;
 
 /**
  * @author senk.christian@googlemail.com

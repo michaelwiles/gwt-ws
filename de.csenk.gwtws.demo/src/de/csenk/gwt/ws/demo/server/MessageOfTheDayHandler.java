@@ -13,12 +13,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.demo.server;
+package de.csenk.gwt.ws.demo.server;
 
-import de.csenk.gwtws.demo.shared.MessageOfTheDayRequest;
-import de.csenk.gwtws.demo.shared.MessageOfTheDayResponse;
-import de.csenk.gwtws.shared.Connection;
-import de.csenk.gwtws.shared.MessageHandler;
+import de.csenk.gwt.ws.demo.shared.MessageOfTheDayRequest;
+import de.csenk.gwt.ws.demo.shared.MessageOfTheDayResponse;
+import de.csenk.gwt.ws.shared.Connection;
+import de.csenk.gwt.ws.shared.MessageHandler;
 
 /**
  * @author Christian
@@ -30,7 +30,7 @@ public class MessageOfTheDayHandler implements
 		MessageHandler<MessageOfTheDayRequest> {
 
 	/* (non-Javadoc)
-	 * @see de.csenk.gwtws.shared.MessageHandler#handleMessage(de.csenk.gwtws.shared.Connection, java.lang.Object)
+	 * @see de.csenk.gwt.ws.shared.MessageHandler#handleMessage(de.csenk.gwt.ws.shared.Connection, java.lang.Object)
 	 */
 	@Override
 	public void handleMessage(Connection connection,

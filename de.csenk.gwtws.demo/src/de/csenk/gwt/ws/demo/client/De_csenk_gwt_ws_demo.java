@@ -13,28 +13,28 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.csenk.gwtws.demo.client;
+package de.csenk.gwt.ws.demo.client;
 
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 
-import de.csenk.gwtws.client.WebSocketConnection;
-import de.csenk.gwtws.client.filter.ClientLoggingFilter;
-import de.csenk.gwtws.client.filter.serialization.ClientGWTSerializationFilter;
-import de.csenk.gwtws.client.js.JavaScriptWebSocket;
-import de.csenk.gwtws.client.js.JavaScriptWebSocketFactory;
-import de.csenk.gwtws.demo.shared.Ping;
-import de.csenk.gwtws.shared.Connection;
-import de.csenk.gwtws.shared.FilterChain;
-import de.csenk.gwtws.shared.MessageDispatchingHandler;
-import de.csenk.gwtws.shared.filter.requestresponse.RequestResponseFilter;
-import de.csenk.gwtws.shared.filter.serialization.GWTSerializer;
+import de.csenk.gwt.ws.client.WebSocketConnection;
+import de.csenk.gwt.ws.client.filter.ClientLoggingFilter;
+import de.csenk.gwt.ws.client.filter.serialization.ClientGWTSerializationFilter;
+import de.csenk.gwt.ws.client.js.JavaScriptWebSocket;
+import de.csenk.gwt.ws.client.js.JavaScriptWebSocketFactory;
+import de.csenk.gwt.ws.demo.shared.Ping;
+import de.csenk.gwt.ws.shared.Connection;
+import de.csenk.gwt.ws.shared.FilterChain;
+import de.csenk.gwt.ws.shared.MessageDispatchingHandler;
+import de.csenk.gwt.ws.shared.filter.requestresponse.RequestResponseFilter;
+import de.csenk.gwt.ws.shared.filter.serialization.GWTSerializer;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class De_csenk_gwtws_demo implements EntryPoint {
+public class De_csenk_gwt_ws_demo implements EntryPoint {
 	
 	@Override
 	public void onModuleLoad() {

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='de_csenk_gwt_ws'>
+	<!-- Inherit the core Web Toolkit stuff.                        -->
+	<inherits name='com.google.gwt.user.User' />
+
+	<generate-with class="de.csenk.gwt.ws.rebind.filter.serialization.GWTSerializerGenerator">
+		<when-type-assignable
+			class="de.csenk.gwt.ws.shared.filter.serialization.GWTSerializer" />
+	</generate-with>
+
+	<!-- Specify the paths for translatable code                    -->
+	<source path='client' />
+	<source path='shared' />
+
+</module>
